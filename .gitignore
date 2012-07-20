@@ -1,0 +1,20 @@
+.project
+**/.project
+**/.classpath
+**/.settings
+*.ipr
+**/bin
+*.class
+.DS_STORE
+.idea
+.gradle
+*.iws
+*.iml
+/*/build
+/target/**/*
+/target/*
+/out
+# Package Files #
+*.jar
+*.war
+*.ear
