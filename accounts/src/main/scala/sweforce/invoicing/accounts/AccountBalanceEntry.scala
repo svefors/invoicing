@@ -11,6 +11,7 @@ import vaadin.scala.implicits._
 import sweforce.vaadin.scala.FProperty
 import sweforce.vaadin.scala.ContainerMethods._
 import currency.Currency.RoundingMode
+import util.Random
 ;
 
 
@@ -22,18 +23,18 @@ import currency.Currency.RoundingMode
  * To change this template use File | Settings | File Templates.
  */
 
-class AccountBalanceEntry {
+class AccountBalanceEntry() {
 
   @NotNull
-  var accountId : UUID = UUID.randomUUID()
+  var accountId: UUID = UUID.randomUUID()
 
-  var currency : Currency = Currency(0.toLong, "NOK")
+  var currency: Currency = Currency(0.toLong, "NOK")
 
-  def addToItem(item : Item) = {
+  def addToItem(item: Item) = {
     item.addItemProperty("balance", new FProperty[Double](currency.toDouble))
   }
 
-  def addToContainer(container : Container) = {
+  def addToContainer(container: Container) = {
     container.getSomeItem(accountId) match {
       case Some(item: Item) =>
         addToItem(item);
@@ -48,12 +49,20 @@ class AccountBalanceEntry {
 }
 
 object AccountBalanceEntry {
-//  trait ContainerAdd extends Container{
-//
-//    def + (balance : AccountBalanceEntry) = {
-//      balance.addToContainer(this);
-//    }
-//  }
+
+  def apply(uuid: UUID, currency: Currency) {
+    val balance = new AccountBalanceEntry
+    balance.accountId = uuid
+    balance.currency = currency
+  }
+
+  def getBalances(accounts: Traversable[AccountEntry]) {
+    val random = new Random()
+    val balances = accounts.map(account => {
+      AccountBalanceEntry(account.accountId, Currency(random.nextLong(), "NOK", 2))
+    })
+    balances
+  }
 }
 
 

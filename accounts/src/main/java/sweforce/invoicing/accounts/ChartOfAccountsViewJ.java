@@ -14,7 +14,7 @@ import java.awt.event.FocusListener;
  * Time: 11:45 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ChartOfAccountsView extends VerticalLayout implements VaadinView {
+public class ChartOfAccountsViewJ extends VerticalLayout implements VaadinView {
 
     private HorizontalLayout bottomToolBar;
 
@@ -25,7 +25,7 @@ public class ChartOfAccountsView extends VerticalLayout implements VaadinView {
         return this;
     }
 
-    public ChartOfAccountsView() {
+    public ChartOfAccountsViewJ() {
         buildMainLayout();
     }
 

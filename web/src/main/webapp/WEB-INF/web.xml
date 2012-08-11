@@ -39,7 +39,7 @@
             <description>Vaadin root</description>
             <param-name>root</param-name>
             <param-value>
-                sweforce.vaadin.sample.secure.SecureApplication
+                sweforce.invoicing.webapp.InvoicingVaadinRoot
             </param-value>
         </init-param>
         <!--
@@ -50,7 +50,7 @@
         -->
     </servlet>
     <servlet-mapping>
-        <servlet-name>Sample Secure Application</servlet-name>
+        <servlet-name>Invoice Application</servlet-name>
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 

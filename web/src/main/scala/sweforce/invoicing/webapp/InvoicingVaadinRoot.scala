@@ -11,13 +11,12 @@ import javax.inject.Named
 import sweforce.vaadin.security.login.LoginPlace
 import sweforce.vaadin.security.logout.LogoutPlace
 import sweforce.gui.ap.activity.{ActivityManager, ActivityMapper}
-import sweforce.gui.ap.place.Place
 import sweforce.vaadin.layout.style2.Style2Layout
-import sweforce.invoicing.accounts.ChartOfAccountsComponent
 import sweforce.gui.event.EventBus
 import com.google.inject.name.Names
-import sweforce.invoicing.accounts.ChartOfAccountsComponent
-import sweforce.invoicing.accounts.ChartOfAccountsComponent.AccountsPlace
+import sweforce.invoicing.accounts.{AccountsPlace, ChartOfAccountsComponent}
+import sweforce.gui.ap.place.{PlacesRunner, Place}
+import collection.JavaConversions._
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,17 +38,27 @@ class InvoicingVaadinRoot extends Root {
 
   object myModule extends AbstractModule {
     def configure() {
-      bind(Place.class).annotatedWith(Names.named("Default Place")).toInstance(new ChartOfAccountsComponent.AccountsPlace());
+      bind(classOf[Place]).annotatedWith(Names.named("Default Place")).toInstance(new AccountsPlace());
     }
 
     @Provides
-    @Named(PlaceHistoryModule.NAMED_PLACE_CLASSES)
-    def providePlaceClasses(){
-      List(
-        classOf[LoginPlace],
-        classOf[LogoutPlace]
-      )
+    @Named(PlaceHistoryModule.NAMED_PLACE_CLASSES) def providePlaceClasses: java.util.Collection[Class[_ <: Place]] = {
+      var places: List[Class[_ <: Place]] =  List[Class[_ <: Place]](
+      classOf[LoginPlace],
+        classOf[LogoutPlace],
+        classOf[AccountsPlace])
+      return places
     }
+//    @Provides
+//    @Named(PlaceHistoryModule.NAMED_PLACE_CLASSES)
+//    def providePlaceClasses() : java.util.Collection[classOf[Place]]{
+//      val classes = List(
+//        classOf[LoginPlace],
+//        classOf[LogoutPlace],
+//        classOf[AccountsPlace]
+//      )
+//      classes
+//    }
 //    @Provides
 //            @Named(PlaceHistoryModule.NAMED_PLACE_CLASSES)
 //            Collection<Class<? extends Place>> providePlaceClasses() {
@@ -68,14 +77,28 @@ class InvoicingVaadinRoot extends Root {
     val style2Layout = new Style2Layout()
     this.setContent(style2Layout)
     val eventbus = injector.getInstance(classOf[EventBus])
+
     val centralActivityManager = new ActivityManager(centralActivityMapper, eventbus)
-    centralActivityMapper.
+    centralActivityManager.setDisplay(style2Layout.getCenterDisplay)
+
+
+    this.setContent(style2Layout)
+    val placesRunner: PlacesRunner = injector.getInstance(classOf[PlacesRunner])
+    try {
+      placesRunner.start
+    }
+    catch {
+      case t: Throwable => {
+        t.printStackTrace
+      }
+    }
+//    centralActivityMapper.
   }
 
   object centralActivityMapper extends ActivityMapper {
-    chartOfAccountsComponent = new ChartOfAccountsComponent
+    val chartOfAccountsComponent = new ChartOfAccountsComponent
     def getActivity(p1: Place) = {
-      chartOfAccountsComponent
+      chartOfAccountsComponent.activity
     }
   }
 
