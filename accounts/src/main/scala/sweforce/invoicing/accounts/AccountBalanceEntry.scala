@@ -12,6 +12,8 @@ import sweforce.vaadin.scala.FProperty
 import sweforce.vaadin.scala.ContainerMethods._
 import currency.Currency.RoundingMode
 import util.Random
+import reflect.BeanProperty
+import collection.mutable.Traversable
 ;
 
 
@@ -26,8 +28,10 @@ import util.Random
 class AccountBalanceEntry() {
 
   @NotNull
+  @BeanProperty
   var accountId: UUID = UUID.randomUUID()
 
+  @BeanProperty
   var currency: Currency = Currency(0.toLong, "NOK")
 
   def addToItem(item: Item) = {
@@ -50,18 +54,19 @@ class AccountBalanceEntry() {
 
 object AccountBalanceEntry {
 
-  def apply(uuid: UUID, currency: Currency) {
+  def apply(uuid: UUID, currency: Currency) = {
     val balance = new AccountBalanceEntry
     balance.accountId = uuid
     balance.currency = currency
+    balance
   }
 
-  def getBalances(accounts: Traversable[AccountEntry]) {
+  def getBalances(accounts: Iterable[AccountEntry]): Iterable[AccountBalanceEntry] = {
     val random = new Random()
-    val balances = accounts.map(account => {
-      AccountBalanceEntry(account.accountId, Currency(random.nextLong(), "NOK", 2))
+    accounts.map(account => {
+      val balance: AccountBalanceEntry = AccountBalanceEntry(account.accountId, Currency(random.nextInt(10000), "NOK", 2))
+      balance
     })
-    balances
   }
 }
 

@@ -20,6 +20,13 @@ class ContainerMethods(val container: Container)  {
       None
   }
 
+  def apply(itemId: AnyRef) = {
+    getSomeItem(itemId)
+  }
+
+  def + (propertyId: Any, propertyType : Class[_], defaultValue : Any){
+    container.addContainerProperty(propertyId, propertyType, defaultValue);
+  }
 
 }
 

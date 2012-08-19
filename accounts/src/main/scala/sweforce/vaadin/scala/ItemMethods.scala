@@ -12,6 +12,21 @@ import com.vaadin.data.{Property, Item}
 
 class ItemMethods(val item: Item) {
 
+  def apply(propertyId: AnyRef, value: AnyRef) = {
+    if (item.getItemProperty(propertyId)!= null){
+      val p = item.getItemProperty(propertyId)
+      p.setValue(value)
+    }
+  }
+
+  def apply(propertyId: AnyRef, value: AnyRef, readOnly : Boolean) = {
+    if (item.getItemProperty(propertyId)!= null){
+      val p = item.getItemProperty(propertyId)
+      p.setValue(value)
+      p.setReadOnly(readOnly)
+    }
+  }
+
   def +(propertyId: AnyRef, p: Property[_]) = {
     item.addItemProperty(propertyId, p)
   }

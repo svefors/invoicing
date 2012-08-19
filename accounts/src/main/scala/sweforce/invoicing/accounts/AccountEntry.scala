@@ -2,12 +2,12 @@ package sweforce.invoicing.accounts
 
 import javax.validation.constraints.{NotNull, Size}
 import java.util.UUID
-import com.vaadin.data.Item
 import com.vaadin.data.util.{IndexedContainer, PropertysetItem, AbstractProperty}
 import sweforce.vaadin.scala.FProperty
 import sweforce.invoicing.accounts.AccountType._
 import sweforce.vaadin.scala.ItemMethods._
 import sweforce.vaadin.scala.ContainerMethods._
+import com.vaadin.data.{Container, Item}
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,9 +30,9 @@ class AccountEntry() {
   var accountType: AccountType = _;
 
   def addToItem(item: Item) = {
-    item +("name", nameProperty);
-    item +("number", numberProperty);
-    item +("accountType", accountTypeProperty);
+    item ("name", nameProperty);
+    item ("number", numberProperty);
+    item ("accountType", accountTypeProperty);
   }
 
   def nameProperty = new FProperty[String](name, name = _)
@@ -48,6 +48,13 @@ class AccountEntry() {
 }
 
 object AccountEntry {
+
+  def configureContainer(container : Container) = {
+    container + ("name", classOf[String], null)
+    container + ("number", classOf[String], null)
+    container + ("accountType", classOf[String], null)
+  }
+
   def apply(accountId: UUID, number: String, name: String, accountType: AccountType) = {
     val entry = new AccountEntry
     entry.accountId = accountId
@@ -56,6 +63,7 @@ object AccountEntry {
     entry.accountType = accountType
     entry
   }
+
 
   def apply(number: String, name: String, accountType: String): AccountEntry = {
     val entry = AccountEntry(UUID.randomUUID(), number, name, AccountType.withName(accountType))

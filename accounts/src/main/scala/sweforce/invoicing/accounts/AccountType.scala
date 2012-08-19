@@ -16,6 +16,9 @@ object AccountType extends Enumeration with Serializable{
   type AccountType = Value
   val Asset, Debt, Equity, Income, Expense = Value
 
+  override def equals(p1: Any) = {
+    this == p1
+  }
 }
 
 
