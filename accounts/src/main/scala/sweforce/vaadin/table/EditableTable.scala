@@ -14,15 +14,20 @@ import com.vaadin.ui._
 
 trait EditableTable extends Table with ItemClickEvent.ItemClickListener {
 
-//  this.setSelectable(true)
+//  var editableColumns = Set[String]()
 
-  //  var fieldFactory = new WrappedFieldFactory(fieldFactory)
   this.addListener(this)
   this.setTableFieldFactory(DefaultFieldFactory.get())
 
   override def setTableFieldFactory(fieldFactory: TableFieldFactory) = {
     super.setTableFieldFactory(new WrappedFieldFactory(fieldFactory));
   }
+
+//  def editableColumn(columns: Seq[String]) {
+//    columns.foreach(
+//      editableColumns = editableColumns + _
+//    )
+//  }
 
   def itemClick(event: ItemClickEvent) = {
     if (event.isDoubleClick) {
@@ -33,9 +38,9 @@ trait EditableTable extends Table with ItemClickEvent.ItemClickListener {
       this.refreshRowCache()
     } else if (!event.isDoubleClick && this.isEditable) {
       editingItemId = null;
-      editingPropertyId= null;
+      editingPropertyId = null;
       this.setEditable(false);
-    }else{
+    } else {
       //?
     }
   }
@@ -46,6 +51,9 @@ trait EditableTable extends Table with ItemClickEvent.ItemClickListener {
   class WrappedFieldFactory(val inner: TableFieldFactory) extends TableFieldFactory {
 
     override def createField(container: Container, itemId: AnyRef, propertyId: AnyRef, uiContext: Component): Field[_] = {
+//      if (!editableColumns.contains(propertyId)) {
+//        return null;
+//      }
       if (propertyId.equals(EditableTable.this.editingPropertyId) && itemId.equals(EditableTable.this.editingItemId)) {
         return inner.createField(container, itemId, propertyId, uiContext)
       } else {
@@ -53,9 +61,6 @@ trait EditableTable extends Table with ItemClickEvent.ItemClickListener {
       }
     }
   }
-
-
-
 
 
 }

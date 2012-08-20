@@ -6,7 +6,7 @@ import sweforce.gui.event.EventBus
 import sweforce.gui.ap.place.Place
 import vaadin.scala._
 import sweforce.gui.ap.place.token.{PlaceTokenizer, Prefix}
-import reflect.BeanProperty
+
 import sweforce.invoicing.accounts.AccountType._
 import currency.Currency
 import currency.Currency._
@@ -16,9 +16,20 @@ import sweforce.vaadin.table.EditableTable
 import com.vaadin.data.{Item, Container}
 import com.vaadin.data.util.converter.Converter
 import java.util.{Locale, UUID}
-import sweforce.vaadin.{ComboBoxOverloaded, NativeSelectOverloaded}
+import sweforce.vaadin.{ComboBoxOverloaded}
 import com.vaadin.data.Property.{ValueChangeEvent, ValueChangeListener}
-import com.vaadin.ui.{Root, Field, Component, DefaultFieldFactory}
+import com.vaadin.ui._
+import sweforce.vaadin.security.place.PlaceRequiresAuthentication
+import com.vaadin.event.MouseEvents.{ClickEvent, ClickListener}
+import vaadin.scala.Button
+import vaadin.scala.HorizontalLayout
+import vaadin.scala.VerticalLayout
+import com.vaadin.ui.Component
+import com.vaadin.ui.Field
+import vaadin.scala.Table
+import com.vaadin.ui.DefaultFieldFactory
+import com.vaadin.ui
+import vaadin.scala
 
 //import com.vaadin.ui._
 
@@ -32,6 +43,17 @@ class ChartOfAccountsComponent {
   object activity extends AbstractActivity {
     def start(p1: Display, p2: EventBus) {
       view.accountOverviewTable.setContainerDataSource(model)
+      view.addAccountButton.addListener(new com.vaadin.ui.Button.ClickListener {
+        def buttonClick(event: ui.Button#ClickEvent) {
+
+        }
+      });
+
+      view.removeAccountButton.addListener(new com.vaadin.ui.Button.ClickListener {
+        def buttonClick(event: ui.Button#ClickEvent) {
+
+        }
+      });
       p1.setView(view)
     }
   }
@@ -41,7 +63,30 @@ class ChartOfAccountsComponent {
 
     lazy val rootContainer = new VerticalLayout(width = 100 pct, height = 100 pct) {
       add(accountOverviewTable);
+      setExpandRatio(accountOverviewTable, 1.0f)
+      setComponentAlignment(accountOverviewTable, Alignment.TOP_LEFT)
+      add(bottomToolbar)
+      setComponentAlignment(bottomToolbar, Alignment.BOTTOM_LEFT)
     }
+
+    lazy val bottomToolbar = new HorizontalLayout(width = 100 pct, margin = true, spacing = true) {
+      setStyleName("bottomToolbar")
+      add(addAccountButton)
+      setComponentAlignment(addAccountButton, Alignment.MIDDLE_LEFT);
+      add(removeAccountButton)
+      setComponentAlignment(removeAccountButton, Alignment.MIDDLE_LEFT);
+      add(searchFilter)
+      setComponentAlignment(searchFilter, Alignment.MIDDLE_RIGHT);
+      setExpandRatio(searchFilter, 1.0f)
+    }
+
+    lazy val addAccountButton = new Button(caption = "+");
+    lazy val removeAccountButton = new Button(caption = "-");
+    lazy val searchFilter = new ui.TextField(){
+      setInputPrompt("Search")
+
+    }
+
 
     lazy val accountOverviewTable = {
       val table = new Table(width = 100 pct, height = 100 pct) with EditableTable;
@@ -55,23 +100,20 @@ class ChartOfAccountsComponent {
       override def createField(container: Container, itemId: AnyRef, propertyId: AnyRef, uiContext: Component): Field[_] = {
         if ("type".equals(propertyId)) {
           val select = new ComboBoxOverloaded
-//          select.setConverterObject(accountTypeConverter.asInstanceOf[Converter[Object, _]])
+          //          select.setConverterObject(accountTypeConverter.asInstanceOf[Converter[Object, _]])
           select.setNullSelectionAllowed(false)
-//          select.addItem(AccountType.Asset.toString)
-//          select.addItem(AccountType.Debt.toString)
-//          select.addItem(AccountType.Equity.toString)
-//          select.addItem(AccountType.Expense.toString)
-//          select.addItem(AccountType.Income.toString)
+
           select.addItem(AccountType.Asset)
           select.addItem(AccountType.Debt)
           select.addItem(AccountType.Equity)
           select.addItem(AccountType.Expense)
           select.addItem(AccountType.Income)
-          //          select.setValue(container.getItem(itemId).getItemProperty(propertyId).getValue.toString)
-          //          select.setPropertyDataSource(container.getItem(itemId).getItemProperty(propertyId))
-          //          select.setImmediate(true);
+
           select.setWidth("100%")
           select
+        } else if ("balance".equals(propertyId)) {
+          //TODO should this move to the Editable Table and a 'readOnly' set of columns/properties?
+          null
         } else {
           super.createField(container, itemId, propertyId, uiContext);
         }
@@ -112,7 +154,6 @@ class ChartOfAccountsComponent {
     this.addContainerProperty("number", classOf[String], "");
     this.addContainerProperty("name", classOf[String], "");
     this.addContainerProperty("type", classOf[AccountType], AccountType.Asset);
-//    this.addContainerProperty("type", classOf[String], AccountType.Asset.toString);
     this.addContainerProperty("balance", classOf[Currency], null);
 
     lazy val accounts = AccountEntry.getUkChartOfAccounts();
@@ -123,41 +164,29 @@ class ChartOfAccountsComponent {
       item("number", account.number)
       item("name", account.name)
       item("type", account.accountType)
-//      item("type", account.accountType.toString)
     })
 
     lazy val accountBalances = AccountBalanceEntry.getBalances(accounts);
     accountBalances.foreach(balance => {
       this.getItem(balance.accountId)("balance", balance.currency, true)
     })
+
+
+    def showNewRowForAdd(){
+
+    }
   }
 
 }
 
-
-//class ChartOfAccountsRow(@BeanProperty
-//  val accountId: UUID = UUID.randomUUID()
-//                          ) {
-//
-//  @BeanProperty
-//  var number: String = _;
-//
-//  @BeanProperty
-//  var name: String = _;
-//
-//  @NotNull
-//  @BeanProperty
-//  var accountType: AccountType = _;
-//
-//  @BeanProperty
-//  var currency: Currency = Currency(0.toLong, "NOK")
-//
-//
-//}
-
 @Prefix("accounts")
+//@PlaceRequiresAuthentication
 class AccountsPlace extends Place {
 
+}
+
+object AccountsPlace {
+  def apply(): AccountsPlace = new AccountsPlace
 }
 
 class AccountsPlaceTokenizer extends PlaceTokenizer[AccountsPlace] {

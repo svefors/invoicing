@@ -1,0 +1,5 @@
+@import "../reindeer/styles.css";
+
+div.header {
+    background-color: grey;
+}
