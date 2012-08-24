@@ -37,7 +37,7 @@ import vaadin.scala
  * The chart of account can have
  */
 
-class ChartOfAccountsComponent {
+class ChartOfAccountsGUI {
 
 
   object activity extends AbstractActivity {
@@ -179,19 +179,6 @@ class ChartOfAccountsComponent {
 
 }
 
-@Prefix("accounts")
-//@PlaceRequiresAuthentication
-class AccountsPlace extends Place {
 
-}
 
-object AccountsPlace {
-  def apply(): AccountsPlace = new AccountsPlace
-}
 
-class AccountsPlaceTokenizer extends PlaceTokenizer[AccountsPlace] {
-
-  def getPlace(p1: String) = new AccountsPlace
-
-  def getToken(p1: AccountsPlace) = ""
-}
