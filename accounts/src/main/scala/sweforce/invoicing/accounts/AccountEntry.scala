@@ -29,11 +29,11 @@ class AccountEntry() {
   @NotNull
   var accountType: AccountType = _;
 
-  def addToItem(item: Item) = {
-    item ("name", nameProperty);
-    item ("number", numberProperty);
-    item ("accountType", accountTypeProperty);
-  }
+//  def addToItem(item: Item) = {
+//    item ("name", nameProperty);
+//    item ("number", numberProperty);
+//    item ("accountType", accountTypeProperty);
+//  }
 
   def nameProperty = new FProperty[String](name, name = _)
 
@@ -76,16 +76,16 @@ object AccountEntry {
   }
 
 
-  implicit def toNewItem(account: AccountEntry) = {
-    val item = new PropertysetItem()
-    item +("accountId", account.accountIdProperty);
-    account.addToItem(item);
-    item;
-    //    item + account.accountIdProperty
-    //    item + account.accountTypeProperty
-    //    item + account.nameProperty
-    //    item + account.numberProperty
-  }
+//  implicit def toNewItem(account: AccountEntry) = {
+//    val item = new PropertysetItem()
+//    item +("accountId", account.accountIdProperty);
+//    account.addToItem(item);
+//    item;
+//    //    item + account.accountIdProperty
+//    //    item + account.accountTypeProperty
+//    //    item + account.nameProperty
+//    //    item + account.numberProperty
+//  }
 
   implicit def newAccountEntry(number: String, name: String, accountType: AccountType) = {
     val entry = AccountEntry(number, name, accountType)

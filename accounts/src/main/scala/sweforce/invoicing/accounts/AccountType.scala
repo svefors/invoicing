@@ -1,18 +1,17 @@
 package sweforce.invoicing.accounts
 
-import java.io.Serializable
+import java.util.UUID
+
 
 /**
- * Created with IntelliJ IDEA.
+ * Created by IntelliJ IDEA.
  * User: sveffa
- * Date: 7/23/12
- * Time: 8:37 PM
+ * Date: 8/20/12
+ * Time: 9:29 PM
  * To change this template use File | Settings | File Templates.
  */
 
-
-
-object AccountType extends Enumeration with Serializable{
+object AccountType extends Enumeration with Serializable {
   type AccountType = Value
   val Asset, Debt, Equity, Income, Expense = Value
 
@@ -22,27 +21,7 @@ object AccountType extends Enumeration with Serializable{
 }
 
 
-//sealed trait AccountType extends Serializable{
-//
-//
-//}
-//
-//case object Asset extends AccountType{
-//
-//}
-//
-//case object Debt extends AccountType{
-//
-//}
-//
-//case object Equity extends AccountType{
-//
-//}
-//
-//case object Income extends AccountType{
-//
-//}
-//
-//case object Expense extends AccountType{
-//
-//}
+
+
+
+

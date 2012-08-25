@@ -16,11 +16,11 @@ import sweforce.gui.ap.place.{PlaceChangeEvent, PlaceChangeRequestEvent, PlacesR
 import collection.JavaConversions._
 import sweforce.gui.ap.place.history.{PlaceTokenizerStore, PlaceHistoryModule}
 import sweforce.gui.ap.place.history.PlaceTokenizerStore.Builder
-import sweforce.invoicing.accounts.{AccountsPlaceTokenizer, AccountsPlace, ChartOfAccountsComponent}
 import sweforce.gui.ap.activity.{Activity, ActivityManager, ActivityMapper}
 import sweforce.vaadin.security.login.UserLoginSuccessEvent.Handler
 import toolbar.ToolbarComponent
 import com.vaadin.annotations.Theme
+import sweforce.invoicing.accounts.{ChartOfAccountsGUI, AccountsPlaceTokenizer, AccountsPlace}
 
 /**
  * Created with IntelliJ IDEA.
@@ -137,7 +137,7 @@ class InvoicingVaadinRoot extends Root {
 
   object rightActivityMapper extends ActivityMapper {
 
-    val chartOfAccountsComponent = new ChartOfAccountsComponent
+    val chartOfAccountsComponent = new ChartOfAccountsGUI
 
     def getActivity(p1: Place) : Activity = {
       if (p1.isInstanceOf[AccountsPlace]){
