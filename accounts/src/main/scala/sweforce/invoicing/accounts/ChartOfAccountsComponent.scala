@@ -11,25 +11,23 @@ import sweforce.invoicing.accounts.AccountType._
 import currency.Currency
 import currency.Currency._
 import sweforce.vaadin.scala.ItemMethods._
-import com.vaadin.data.util.IndexedContainer
 import sweforce.vaadin.table.EditableTable
-import com.vaadin.data.{Item, Container}
 import com.vaadin.data.util.converter.Converter
 import java.util.{Locale, UUID}
 import sweforce.vaadin.{ComboBoxOverloaded}
 import com.vaadin.data.Property.{ValueChangeEvent, ValueChangeListener}
-import com.vaadin.ui._
 import sweforce.vaadin.security.place.PlaceRequiresAuthentication
 import com.vaadin.event.MouseEvents.{ClickEvent, ClickListener}
 import vaadin.scala.Button
 import vaadin.scala.HorizontalLayout
 import vaadin.scala.VerticalLayout
 import com.vaadin.ui.Component
-import com.vaadin.ui.Field
+
+//import com.vaadin.ui.Field
+
 import vaadin.scala.Table
-import com.vaadin.ui.DefaultFieldFactory
-import com.vaadin.ui
 import vaadin.scala
+
 
 //import com.vaadin.ui._
 
@@ -42,18 +40,16 @@ class ChartOfAccountsComponent {
 
   object activity extends AbstractActivity {
     def start(p1: Display, p2: EventBus) {
-      view.accountOverviewTable.setContainerDataSource(model)
-      view.addAccountButton.addListener(new com.vaadin.ui.Button.ClickListener {
-        def buttonClick(event: ui.Button#ClickEvent) {
+      view.accountOverviewTable.container = model
+      view.addAccountButton.clickListeners += (event => {
+        System.out.println("add button clicked")
+      })
 
-        }
-      });
+      view.removeAccountButton.clickListeners += (event => {
+        System.out.println("remove button clicked")
+      })
 
-      view.removeAccountButton.addListener(new com.vaadin.ui.Button.ClickListener {
-        def buttonClick(event: ui.Button#ClickEvent) {
 
-        }
-      });
       p1.setView(view)
     }
   }
@@ -61,47 +57,52 @@ class ChartOfAccountsComponent {
 
   object view extends VaadinView {
 
-    lazy val rootContainer = new VerticalLayout(width = 100 pct, height = 100 pct) {
+    lazy val rootContainer = new VerticalLayout() {
+      sizeFull()
       add(accountOverviewTable);
-      setExpandRatio(accountOverviewTable, 1.0f)
-      setComponentAlignment(accountOverviewTable, Alignment.TOP_LEFT)
+      expandRatio(accountOverviewTable, 1.0f)
+      alignment(accountOverviewTable, Alignment.TopLeft)
       add(bottomToolbar)
-      setComponentAlignment(bottomToolbar, Alignment.BOTTOM_LEFT)
+      alignment(bottomToolbar, Alignment.BottomLeft)
     }
 
-    lazy val bottomToolbar = new HorizontalLayout(width = 100 pct, margin = true, spacing = true) {
-      setStyleName("bottomToolbar")
-      add(addAccountButton)
-      setComponentAlignment(addAccountButton, Alignment.MIDDLE_LEFT);
-      add(removeAccountButton)
-      setComponentAlignment(removeAccountButton, Alignment.MIDDLE_LEFT);
-      add(searchFilter)
-      setComponentAlignment(searchFilter, Alignment.MIDDLE_RIGHT);
-      setExpandRatio(searchFilter, 1.0f)
+    lazy val bottomToolbar = new HorizontalLayout() {
+      width = (100 pct)
+      margin = true
+      spacing = true
+      styleName = "bottomToolbar"
+      add(alignment = Alignment.MiddleLeft, component = addAccountButton)
+      add(alignment = Alignment.MiddleLeft, component = removeAccountButton)
+      add(alignment = Alignment.MiddleRight, component = searchFilter, ratio = 1.0f)
     }
 
-    lazy val addAccountButton = new Button(caption = "+");
-    lazy val removeAccountButton = new Button(caption = "-");
-    lazy val searchFilter = new ui.TextField(){
-      setInputPrompt("Search")
-
+    lazy val addAccountButton = new Button() {
+      caption = "+"
+    };
+    lazy val removeAccountButton = new Button() {
+      caption = "-"
+    };
+    lazy val searchFilter = new scala.TextField()() {
+      prompt = ("Search")
     }
 
 
     lazy val accountOverviewTable = {
-      val table = new Table(width = 100 pct, height = 100 pct) with EditableTable;
-      table.setTableFieldFactory(fieldFactory)
+      val table = new Table() with EditableTable {
+        sizeFull()
+      }
+      table.tableFieldFactory_=(DefaultFieldFactory)
       table
     }
 
-    object fieldFactory extends DefaultFieldFactory {
+    object fieldFactory extends TableFieldFactory {
 
 
-      override def createField(container: Container, itemId: AnyRef, propertyId: AnyRef, uiContext: Component): Field[_] = {
-        if ("type".equals(propertyId)) {
-          val select = new ComboBoxOverloaded
+      def createField(ingredients: TableFieldIngredients): Option[Field] = {
+        if ("type".equals(ingredients.propertyId)) {
+          val select = new ComboBox()
           //          select.setConverterObject(accountTypeConverter.asInstanceOf[Converter[Object, _]])
-          select.setNullSelectionAllowed(false)
+          select.nullSelectionAllowed = (false)
 
           select.addItem(AccountType.Asset)
           select.addItem(AccountType.Debt)
@@ -109,18 +110,22 @@ class ChartOfAccountsComponent {
           select.addItem(AccountType.Expense)
           select.addItem(AccountType.Income)
 
-          select.setWidth("100%")
-          select
-        } else if ("balance".equals(propertyId)) {
+          select.width = 100 percent
+          return Some(select)
+        } else if ("balance".equals(ingredients.propertyId)) {
           //TODO should this move to the Editable Table and a 'readOnly' set of columns/properties?
-          null
+          return None
         } else {
-          super.createField(container, itemId, propertyId, uiContext);
+          return DefaultFieldFactory.createField(ingredients);
         }
+      }
+
+      override def createField(container: Container, itemId: AnyRef, propertyId: AnyRef, uiContext: Component): Field[_] = {
+
       }
     }
 
-    def asComponent() = rootContainer
+    def asComponent() = rootContainer.p
 
 
   }
@@ -151,28 +156,50 @@ class ChartOfAccountsComponent {
   }
 
   object model extends IndexedContainer {
-    this.addContainerProperty("number", classOf[String], "");
-    this.addContainerProperty("name", classOf[String], "");
-    this.addContainerProperty("type", classOf[AccountType], AccountType.Asset);
-    this.addContainerProperty("balance", classOf[Currency], null);
+    this.addContainerProperty("number", classOf[String], None);
+    this.addContainerProperty("name", classOf[String], None);
+    this.addContainerProperty("type", classOf[AccountType], Some(AccountType.Asset));
+    this.addContainerProperty("balance", classOf[Currency], None);
 
     lazy val accounts = AccountEntry.getUkChartOfAccounts();
 
 
     accounts.foreach(account => {
-      val item = this.addItem(account.accountId)
-      item("number", account.number)
-      item("name", account.name)
-      item("type", account.accountType)
+      this.addItem(account.accountId) match {
+        case Some(item) => {
+          item.property("number") match {
+            case Some(p) => p.value = account.number
+          }
+          item.property("name") match {
+            case Some(p) => p.value = account.name
+          }
+          item.property("type") match {
+            case Some(p) => p.value = account.accountType
+          }
+          //          item("number", account.number)
+          //          item("name", account.name)
+          //          item("type", account.accountType)
+        }
+      }
+
+
     })
 
     lazy val accountBalances = AccountBalanceEntry.getBalances(accounts);
     accountBalances.foreach(balance => {
-      this.getItem(balance.accountId)("balance", balance.currency, true)
+      item(balance.accountId) match {
+        case Some(it) => it.property("balance")
+        match {
+          case Some(p) => {
+            p.value = balance.currency
+            p.readOnly = true
+          }
+        }
+      }
     })
 
 
-    def showNewRowForAdd(){
+    def showNewRowForAdd() {
 
     }
   }

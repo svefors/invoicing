@@ -41,7 +41,7 @@ subprojects {
                 'com.vaadin:vaadin:7.0.0.alpha3',
                 'javax.validation:validation-api:1.0.0.GA',
                 'org.apache.bval:bval-jsr303:0.4',
-                "org.vaadin.addons:scaladin:1.0.0",
+                "org.vaadin.addons:scaladin:2.0.0",
                 'org.scala-lang:scala-library:2.9.2'
         ])
 
