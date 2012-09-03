@@ -1,13 +1,15 @@
 package sweforce.invoicing.accounts
 
-import javax.validation.constraints.{NotNull, Size}
 import java.util.UUID
 import com.vaadin.data.util.{IndexedContainer, PropertysetItem, AbstractProperty}
-import sweforce.vaadin.scala.FProperty
+
 import sweforce.invoicing.accounts.AccountType._
 import sweforce.vaadin.scala.ItemMethods._
 import sweforce.vaadin.scala.ContainerMethods._
 import com.vaadin.data.{Container, Item}
+import annotation.target.beanGetter
+import reflect.BeanProperty
+import javax.validation.constraints.{NotNull, Size}
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,80 +19,104 @@ import com.vaadin.data.{Container, Item}
  * To change this template use File | Settings | File Templates.
  */
 
-class AccountEntry() {
+case class AccountEntry(val accountId: UUID,
+                        val number: String,
+                        val name: String,
+                        val accountType: AccountType) {
 
   @NotNull
-  var accountId: UUID = UUID.randomUUID()
+  def getAccountId() = accountId;
 
-  var number: String = _;
 
-  var name: String = _;
+  @Size(max = 4)
+//  @Digits
+  def getNumber() = number;
+
+  @Size(min = 3, max = 4000)
+  def getName() = name;
 
   @NotNull
-  var accountType: AccountType = _;
+  def getAccountType = accountType
 
-//  def addToItem(item: Item) = {
-//    item ("name", nameProperty);
-//    item ("number", numberProperty);
-//    item ("accountType", accountTypeProperty);
-//  }
+  //  def x() = {
+  //    accountId -> values()
+  //  }
 
-  def nameProperty = new FProperty[String](name, name = _)
+  def values(): Seq[Tuple2[Any, Any]] = {
+    //val container = Container('itemId1 -> List('propertyId1 -> "value1", 'propertyId2 -> "value2"), 'itemId2 -> List())
+    List(
+      'accountId -> accountId, 'number -> number, 'name -> name, 'accountType -> accountType
+    )
+  }
 
-  def numberProperty = new FProperty[String](number, number = _)
+  def asProduct() : Tuple2[Any, Seq[Tuple2[Any, Any]]] = {
+    accountId -> values()
+  }
 
-  def accountTypeProperty = new FProperty[String](accountType.toString, {
-    value: String => accountType = AccountType.withName(value)
-  })
-
-  def accountIdProperty = new FProperty[UUID](accountId)
+  //  //  def addToItem(item: Item) = {
+  //  //    item ("name", nameProperty);
+  //  //    item ("number", numberProperty);
+  //  //    item ("accountType", accountTypeProperty);
+  //  //  }
+  //
+  //  def nameProperty = new FProperty[String](name, name = _)
+  //
+  //  def numberProperty = new FProperty[String](number, number = _)
+  ////
+  ////  def accountTypeProperty = new FProperty[String](accountType.toString, {
+  ////    value: String => accountType = AccountType.withName(value)
+  ////  })
+  //
+  //  def accountIdProperty = new FProperty[UUID](accountId)
 
 }
 
 object AccountEntry {
 
-  def configureContainer(container : Container) = {
-    container + ("name", classOf[String], null)
-    container + ("number", classOf[String], null)
-    container + ("accountType", classOf[String], null)
-  }
+  //  def configureContainer(container: Container) = {
+  //    container + ("name", classOf[String], null)
+  //    container + ("number", classOf[String], null)
+  //    container + ("accountType", classOf[String], null)
+  //  }
+  //
+  //  def apply(accountId: UUID, number: String, name: String, accountType: AccountType) = {
+  //    val entry = new AccountEntry
+  //    entry.accountId = accountId
+  //    entry.number = number
+  //    entry.name = name
+  //    entry.accountType = accountType
+  //    entry
+  //  }
+  //
+  //
+  def apply(number: String, name: String, accountType: String): AccountEntry =
+    AccountEntry(UUID.randomUUID(), number, name, AccountType.withName(accountType))
 
-  def apply(accountId: UUID, number: String, name: String, accountType: AccountType) = {
-    val entry = new AccountEntry
-    entry.accountId = accountId
-    entry.number = number
-    entry.name = name
-    entry.accountType = accountType
-    entry
-  }
+  def apply(number: String, name: String, accountType: AccountType): AccountEntry =
+    AccountEntry(UUID.randomUUID(), number, name, accountType)
+
+  //
+  //  def apply(number: String, name: String, accountType: AccountType): AccountEntry = {
+  //    val entry = AccountEntry(UUID.randomUUID(), number, name, accountType)
+  //    entry
+  //  }
 
 
-  def apply(number: String, name: String, accountType: String): AccountEntry = {
-    val entry = AccountEntry(UUID.randomUUID(), number, name, AccountType.withName(accountType))
-    entry
-  }
+  //  implicit def toNewItem(account: AccountEntry) = {
+  //    val item = new PropertysetItem()
+  //    item +("accountId", account.accountIdProperty);
+  //    account.addToItem(item);
+  //    item;
+  //    //    item + account.accountIdProperty
+  //    //    item + account.accountTypeProperty
+  //    //    item + account.nameProperty
+  //    //    item + account.numberProperty
+  //  }
 
-  def apply(number: String, name: String, accountType: AccountType): AccountEntry = {
-    val entry = AccountEntry(UUID.randomUUID(), number, name, accountType)
-    entry
-  }
-
-
-//  implicit def toNewItem(account: AccountEntry) = {
-//    val item = new PropertysetItem()
-//    item +("accountId", account.accountIdProperty);
-//    account.addToItem(item);
-//    item;
-//    //    item + account.accountIdProperty
-//    //    item + account.accountTypeProperty
-//    //    item + account.nameProperty
-//    //    item + account.numberProperty
-//  }
-
-  implicit def newAccountEntry(number: String, name: String, accountType: AccountType) = {
-    val entry = AccountEntry(number, name, accountType)
-    entry
-  }
+  //  implicit def newAccountEntry(number: String, name: String, accountType: AccountType) = {
+  //    val entry = AccountEntry(number, name, accountType)
+  //    entry
+  //  }
 
 
   def getUkChartOfAccounts() = {

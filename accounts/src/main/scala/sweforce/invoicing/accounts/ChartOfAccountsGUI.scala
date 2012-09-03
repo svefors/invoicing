@@ -23,6 +23,8 @@ import vaadin.scala.HorizontalLayout
 import vaadin.scala.VerticalLayout
 import com.vaadin.ui.Component
 
+
+
 //import com.vaadin.ui.Field
 
 import vaadin.scala.Table
@@ -40,7 +42,7 @@ class ChartOfAccountsGUI {
 
   object activity extends AbstractActivity {
     def start(p1: Display, p2: EventBus) {
-      view.accountOverviewTable.container = model
+      view.accountOverviewTable.container = model.container
       view.addAccountButton.clickListeners += (event => {
         System.out.println("add button clicked")
       })
@@ -59,15 +61,12 @@ class ChartOfAccountsGUI {
 
     lazy val rootContainer = new VerticalLayout() {
       sizeFull()
-      add(accountOverviewTable);
-      expandRatio(accountOverviewTable, 1.0f)
-      alignment(accountOverviewTable, Alignment.TopLeft)
-      add(bottomToolbar)
-      alignment(bottomToolbar, Alignment.BottomLeft)
+      add(alignment = Alignment.TopLeft, component = accountOverviewTable, ratio = 1.0f)
+      add(component = bottomToolbar, alignment = Alignment.BottomLeft)
     }
 
     lazy val bottomToolbar = new HorizontalLayout() {
-      width = (100 pct)
+      width = (100 percent)
       margin = true
       spacing = true
       styleName = "bottomToolbar"
@@ -82,7 +81,7 @@ class ChartOfAccountsGUI {
     lazy val removeAccountButton = new Button() {
       caption = "-"
     };
-    lazy val searchFilter = new scala.TextField()() {
+    lazy val searchFilter = new TextField() {
       prompt = ("Search")
     }
 
@@ -100,29 +99,26 @@ class ChartOfAccountsGUI {
 
       def createField(ingredients: TableFieldIngredients): Option[Field] = {
         if ("type".equals(ingredients.propertyId)) {
-          val select = new ComboBox()
-          //          select.setConverterObject(accountTypeConverter.asInstanceOf[Converter[Object, _]])
-          select.nullSelectionAllowed = (false)
-
+          val select: ComboBox = new ComboBox() {
+            width = (100 percent)
+            nullSelectionAllowed = (false)
+          }
           select.addItem(AccountType.Asset)
           select.addItem(AccountType.Debt)
           select.addItem(AccountType.Equity)
           select.addItem(AccountType.Expense)
           select.addItem(AccountType.Income)
 
-          select.width = 100 percent
-          return Some(select)
+
+          Some(select)
         } else if ("balance".equals(ingredients.propertyId)) {
           //TODO should this move to the Editable Table and a 'readOnly' set of columns/properties?
-          return None
+          None
         } else {
-          return DefaultFieldFactory.createField(ingredients);
+          DefaultFieldFactory.createField(ingredients);
         }
       }
 
-      override def createField(container: Container, itemId: AnyRef, propertyId: AnyRef, uiContext: Component): Field[_] = {
-
-      }
     }
 
     def asComponent() = rootContainer.p
@@ -155,53 +151,70 @@ class ChartOfAccountsGUI {
     }
   }
 
-  object model extends IndexedContainer {
-    this.addContainerProperty("number", classOf[String], None);
-    this.addContainerProperty("name", classOf[String], None);
-    this.addContainerProperty("type", classOf[AccountType], Some(AccountType.Asset));
-    this.addContainerProperty("balance", classOf[Currency], None);
+  object model {
 
-    lazy val accounts = AccountEntry.getUkChartOfAccounts();
-
-
-    accounts.foreach(account => {
-      this.addItem(account.accountId) match {
-        case Some(item) => {
-          item.property("number") match {
-            case Some(p) => p.value = account.number
-          }
-          item.property("name") match {
-            case Some(p) => p.value = account.name
-          }
-          item.property("type") match {
-            case Some(p) => p.value = account.accountType
-          }
-          //          item("number", account.number)
-          //          item("name", account.name)
-          //          item("type", account.accountType)
+    lazy val container = {
+      val c = Container(
+      AccountEntry.getUkChartOfAccounts().map(entry => {
+        entry.accountId -> entry.values()
+      }): _*)
+      c.addContainerProperty("balance", classOf[Currency], None);
+      AccountBalanceEntry.getBalances(AccountEntry.getUkChartOfAccounts()).foreach( balance => {
+        c.property(balance.getAccountId(), "balance") match {
+          case Some(p : Property) => //p.value = (balance.currency)
+          case None =>
         }
-      }
-
-
-    })
-
-    lazy val accountBalances = AccountBalanceEntry.getBalances(accounts);
-    accountBalances.foreach(balance => {
-      item(balance.accountId) match {
-        case Some(it) => it.property("balance")
-        match {
-          case Some(p) => {
-            p.value = balance.currency
-            p.readOnly = true
-          }
-        }
-      }
-    })
-
-
-    def showNewRowForAdd() {
-
+      })
+      c
     }
+
+
+    //    this.addContainerProperty("number", classOf[String], None);
+    //    this.addContainerProperty("name", classOf[String], None);
+    //    this.addContainerProperty("type", classOf[AccountType], Some(AccountType.Asset));
+    //    this.addContainerProperty("balance", classOf[Currency], None);
+
+    //    lazy val accounts =
+    //
+    //
+    //      accounts.foreach(account => {
+    //        this.addItem(account.accountId) match {
+    //          case Some(item) => {
+    //            item.property("number") match {
+    //              case Some(p) => p.value = account.number
+    //            }
+    //            item.property("name") match {
+    //              case Some(p) => p.value = account.name
+    //            }
+    //            item.property("type") match {
+    //              case Some(p) => p.value = account.accountType
+    //            }
+    //            //          item("number", account.number)
+    //            //          item("name", account.name)
+    //            //          item("type", account.accountType)
+    //          }
+    //        }
+    //
+    //
+    //      })
+    //
+    //    lazy val accountBalances = AccountBalanceEntry.getBalances(accounts);
+    //    accountBalances.foreach(balance => {
+    //      item(balance.accountId) match {
+    //        case Some(it) => it.property("balance")
+    //        match {
+    //          case Some(p) => {
+    //            p.value = balance.currency
+    //            p.readOnly = true
+    //          }
+    //        }
+    //      }
+    //    })
+    //
+    //
+    //    def showNewRowForAdd() {
+    //
+    //    }
   }
 
 }

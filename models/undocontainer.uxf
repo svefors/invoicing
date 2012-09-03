@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>360</x>
+      <y>200</y>
+      <w>260</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;trait&gt;&gt;
+PaginatedContainer
+--
+val listener: ItemSetChangeListener
+--
+getTotalSize()
+addItemAt(index)
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>690</x>
+      <y>120</y>
+      <w>350</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>ContainerQuery
+--
+getTotalSize() : int
+size(filters)
+loadItems(offset:Int, limit:Int, filters:Filters*) : List[Items]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>690</x>
+      <y>350</y>
+      <w>350</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>CommandBuffer
+--
+
+--
+commit()
+rollback()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>690</x>
+      <y>220</y>
+      <w>350</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>ContainerWrite
+--
+--
+removeItem(itemId)
+addItem(itemId)
+updateItemProperty(itemId, propertyId, value)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Note</type>
+    <coordinates>
+      <x>590</x>
+      <y>520</y>
+      <w>350</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+addItem + (updateItemProperty)* = CREATE
+(updateItemProperty)* = UPDATE
+removeItem = DELETE</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1100</x>
+      <y>220</y>
+      <w>170</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>ContainerCommand?
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1010</x>
+      <y>250</y>
+      <w>212</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+{ordered}
+m1=*</panel_attributes>
+    <additional_attributes>160;30;160;140;30;140</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1340</x>
+      <y>150</y>
+      <w>180</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>AddItemCommand
+--
+itemId</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1340</x>
+      <y>250</y>
+      <w>180</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>DeleteItemCommand
+--
+itemId</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1340</x>
+      <y>420</y>
+      <w>180</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>UpdateItemProperty
+--
+itemId
+propertyId
+oldValue
+newValue</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1230</x>
+      <y>160</y>
+      <w>130</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;60;30;30;110;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1240</x>
+      <y>230</y>
+      <w>120</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;100;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1230</x>
+      <y>250</y>
+      <w>130</w>
+      <h>230</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>30;30;30;210;110;210</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1010</x>
+      <y>230</y>
+      <w>110</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>90;30;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>990</x>
+      <y>460</y>
+      <w>240</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>ContainerCommandHandler
+--
+handle(AddItemCommand)
+handle(UpdateItemProperty)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>400</x>
+      <y>0</y>
+      <w>260</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;trait&gt;&gt;
+Container.Filterable
+--
+addContainerFilter
+removeContainerFilter
+removeAllContainerFilter
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>480</x>
+      <y>110</y>
+      <w>50</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>30;30;30;90</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>240</x>
+      <y>400</y>
+      <w>260</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>PaginationController
+--
+page : int 
+rowsPerPage : int 
+--
+valueChange(event)
+containerItemSetChange(event)
+last()
+first()
+forward(pages:int)
+back(pages:int)
+setRowsPerPage(int)
+getRowsPerPage():int
+
+
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>750</x>
+      <y>0</y>
+      <w>280</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>ItemIdsCollection
+--
+size()
+iterator()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>440</x>
+      <y>310</y>
+      <w>50</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>30;30;30;90</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>240</x>
+      <y>660</y>
+      <w>260</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>PaginationView
+--
+contains controls to navigate
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>330</x>
+      <y>580</y>
+      <w>50</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-&gt;</panel_attributes>
+    <additional_attributes>30;30;30;80</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>30</x>
+      <y>100</y>
+      <w>220</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Table
+--
+setValue(value : Object)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>40</x>
+      <y>230</y>
+      <w>180</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>ValueChangeEvent</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
