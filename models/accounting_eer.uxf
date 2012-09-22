@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.custom.EER_Entity</type>
+    <coordinates>
+      <x>20</x>
+      <y>350</y>
+      <w>310</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>##Accounts
+--
+_accountId_
+accounting_system_id &lt;&lt;uk_acct_nr&gt;&gt;
+accountnr &lt;&lt;uk_acct_nr&gt;&gt;
+description
+account_type
+open
+version
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.EER_Entity</type>
+    <coordinates>
+      <x>20</x>
+      <y>170</y>
+      <w>310</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>AccountingSystem
+--
+accounting_system_id
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>150</x>
+      <y>190</y>
+      <w>50</w>
+      <h>180</h>
+    </coordinates>
+    <panel_attributes>lt=EER&gt;
+r1=1
+r2=M
+</panel_attributes>
+    <additional_attributes>30;30;30;160</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.EER_Entity</type>
+    <coordinates>
+      <x>940</x>
+      <y>170</y>
+      <w>310</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>##Account_Numbers
+--
+id
+chart_of_accounts &lt;&lt;uk_acct_nr&gt;&gt;
+accountnr &lt;&lt;uk_acct_nr&gt;&gt;
+version
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.custom.EER_Entity</type>
+    <coordinates>
+      <x>450</x>
+      <y>170</y>
+      <w>340</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>##Chart_of_Accounts
+--
+accounting_system_id &lt;&lt;uk_coa_acct_system&gt;&gt;
+version
+accountnr &lt;&lt;uk_acct_nr&gt;&gt;
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>300</x>
+      <y>160</y>
+      <w>170</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=EER&gt;
+r1=1
+r2=1
+</panel_attributes>
+    <additional_attributes>30;30;150;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>760</x>
+      <y>160</y>
+      <w>200</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=EER&gt;
+r1=1
+r2=M
+</panel_attributes>
+    <additional_attributes>30;30;180;30</additional_attributes>
+  </element>
+</diagram>

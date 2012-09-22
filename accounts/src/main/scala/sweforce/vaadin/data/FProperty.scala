@@ -1,4 +1,4 @@
-package sweforce.vaadin.scala
+package sweforce.vaadin.data
 
 import com.vaadin.data.Property
 
@@ -12,11 +12,15 @@ import com.vaadin.data.Property
 
 class FProperty[T](getter: => T, setter: (T) => Unit)(implicit m: Manifest[T]) extends Property[T] with Serializable {
 
-  def this(getter: => T)(implicit m: Manifest[T]) = this(getter, null)
+  def this(getter: => T)(implicit m: Manifest[T]) = this (getter, null)
 
   override def getValue = getter
 
   override def setValue(newValue: Any) {
+    if (newValue != null && !m.erasure.isAssignableFrom(newValue.getClass)) {
+      throw new IllegalArgumentException("Invalid value type " + newValue.getClass.getName
+        + " for FProperty of type " + m.erasure.getClass.getName + ".")
+    }
     setter(newValue.asInstanceOf[T])
   }
 

@@ -9,7 +9,7 @@ package sweforce.vaadin.data.pagination
  */
 trait ContainerWrite {
 
-  abstract def removeItem(itemId : Any) : Boolean
+  def removeItem(itemId : Any) : Boolean
 
 
 }

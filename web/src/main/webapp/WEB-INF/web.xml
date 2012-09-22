@@ -32,12 +32,10 @@
 
     <servlet>
         <servlet-name>Invoice Application</servlet-name>
-        <servlet-class>
-            com.vaadin.terminal.gwt.server.ApplicationServlet
-        </servlet-class>
+        <servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
         <init-param>
-            <description>Vaadin root</description>
-            <param-name>root</param-name>
+            <description>Vaadin UI</description>
+            <param-name>UI</param-name>
             <param-value>
                 sweforce.invoicing.webapp.InvoicingVaadinRoot
             </param-value>
@@ -52,6 +50,10 @@
     <servlet-mapping>
         <servlet-name>Invoice Application</servlet-name>
         <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Invoice Application</servlet-name>
+        <url-pattern>/VAADIN/*</url-pattern>
     </servlet-mapping>
 
 </web-app>

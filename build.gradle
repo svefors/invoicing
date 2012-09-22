@@ -35,14 +35,18 @@ subprojects {
                 'com.google.inject:guice:3.0',
                 'org.slf4j:slf4j-api:1.6.6',
                 'ch.qos.logback:logback-classic:1.0.6',
-                'sweforce.vaadin:activitiesplaces:1.1',
-                'sweforce.vaadin:security-shiro:1.1',
-                'sweforce.vaadin:layout:1.1',
-                'com.vaadin:vaadin:7.0.0.alpha3',
+                'sweforce.vaadin:activitiesplaces:1.2.1',
+                'sweforce.vaadin:security-shiro:1.2.1',
+                'sweforce.vaadin:layout:1.2.1',
+                'com.vaadin:vaadin-server:7.0.0.beta1',
+                'com.vaadin:vaadin-client-compiled:7.0.0.beta1',
+                'com.vaadin:vaadin-themes:7.0.0.beta1',
                 'javax.validation:validation-api:1.0.0.GA',
                 'org.apache.bval:bval-jsr303:0.4',
-                "org.vaadin.addons:scaladin:2.0.0",
+//                "org.vaadin.addons:scaladin:1.0.0",
                 'org.scala-lang:scala-library:2.9.2'
+//,                project(':scaladin')
+
         ])
 
     }
@@ -57,12 +61,19 @@ subprojects {
     }
 }
 
+project(':accounts') {
+    dependencies {
+        compile([
+                'org.axonframework:axon-core:2.0-m2'
+        ])
+    }
 
+}
 
 project(':backend') {
     dependencies {
         compile([
-                'org.axonframework:axon-core:2.0-m1'
+                'org.axonframework:axon-core:2.0-m2'
         ])
     }
 
@@ -74,10 +85,11 @@ project(':web') {
     apply plugin: 'jetty'
     dependencies {
         compile([
-                'sweforce.vaadin:activitiesplaces:1.1',
-                'sweforce.vaadin:security-shiro:1.1',
-                'sweforce.vaadin:layout:1.1',
+                'sweforce.vaadin:activitiesplaces:1.2.1',
+                'sweforce.vaadin:security-shiro:1.2.1',
+                'sweforce.vaadin:layout:1.2.1',
                 project(':accounts')
+
 
         ])
         testCompile(

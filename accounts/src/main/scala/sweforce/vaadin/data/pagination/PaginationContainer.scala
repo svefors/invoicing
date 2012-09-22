@@ -9,7 +9,7 @@ import scala.collection.JavaConversions._
 /**
  * items are in the container
  */
-class PaginationContainer(val containerQuery: ContainerQuery, val containerWrite: ContainerWrite) extends AbstractContainer with Buffered with Sortable {
+abstract class PaginationContainer(val containerQuery: ContainerQuery, val containerWrite: ContainerWrite) extends AbstractContainer with Buffered with Sortable {
 
   var sortProperties = Array[AnyRef]()
 
@@ -21,7 +21,7 @@ class PaginationContainer(val containerQuery: ContainerQuery, val containerWrite
 
   var itemCache = List[Item]()
 
-  var propertyItemMapCache =  Map[Property, Item]();
+  var propertyItemMapCache =  Map[Property[_], Item]();
 
   var bufferedWriteItems = List[Item]()
 
@@ -62,7 +62,7 @@ class PaginationContainer(val containerQuery: ContainerQuery, val containerWrite
     itemCache = itemCache ::: bufferedWriteItems
     itemSorter.setSortProperties(this, sortProperties, sortAscending)
 
-    Collections.sort(itemCache, itemSorter)
+//    Collections.sort(itemCache, itemSorter)
 
     currentOffset = offset
     currentLimit = limit
@@ -126,15 +126,15 @@ class PaginationContainer(val containerQuery: ContainerQuery, val containerWrite
   //    return null;
   //  }
 
-  def addItem(itemId: Any): Boolean = {
-    itemId match {
-      case x: Int => {
-
-        return true;
-      }
-      case _ => return false
-    }
-  }
+//  def addItem(itemId: Any): Boolean = {
+//    itemId match {
+//      case x: Int => {
+//
+//        return true;
+//      }
+//      case _ => return false
+//    }
+//  }
 
   def addItem() = null
 

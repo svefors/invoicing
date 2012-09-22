@@ -1,7 +1,7 @@
 package sweforce.invoicing.webapp
 
-import com.vaadin.ui.Root
-import com.vaadin.terminal.{Sizeable, WrappedRequest}
+import com.vaadin.server.Sizeable
+import com.vaadin.server.WrappedRequest
 import com.google.inject.{Provides, AbstractModule, Guice}
 import menu.MenuComponent
 import sweforce.vaadin.security.SecureMvpModule
@@ -19,8 +19,11 @@ import sweforce.gui.ap.place.history.PlaceTokenizerStore.Builder
 import sweforce.gui.ap.activity.{Activity, ActivityManager, ActivityMapper}
 import sweforce.vaadin.security.login.UserLoginSuccessEvent.Handler
 import toolbar.ToolbarComponent
-import com.vaadin.annotations.Theme
 import sweforce.invoicing.accounts.{ChartOfAccountsGUI, AccountsPlaceTokenizer, AccountsPlace}
+import com.vaadin.ui.{UI}
+import com.vaadin.annotations.{PreserveOnRefresh, Theme}
+import sweforce.gui.ap.place.controller.PlaceController
+import sweforce.invoicing.entries.create.{CreateEntryGUI, CreateEntryPlace, CreateEntryPlaceTokenizer}
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,7 +33,8 @@ import sweforce.invoicing.accounts.{ChartOfAccountsGUI, AccountsPlaceTokenizer, 
  * To change this template use File | Settings | File Templates.
  */
 @Theme("invoicing")
-class InvoicingVaadinRoot extends Root {
+@PreserveOnRefresh
+class InvoicingVaadinRoot extends UI {
 
 
   val injector = Guice.createInjector(
@@ -48,16 +52,18 @@ class InvoicingVaadinRoot extends Root {
 
     @Provides
     def providePlaceTokenizerStore() = {
-      new PlaceTokenizerStore.Builder().addPlace(
-        classOf[LoginPlace]).addPlace(
-        classOf[LogoutPlace]).addTokenizer(
-        classOf[AccountsPlaceTokenizer]
-      ).build();
+      new PlaceTokenizerStore.Builder()
+        .addPlace(classOf[LoginPlace])
+        .addPlace(classOf[LogoutPlace])
+        .addTokenizer(classOf[AccountsPlaceTokenizer])
+        .addTokenizer(classOf[CreateEntryPlaceTokenizer])
+        .build();
     }
 
   }
 
   def init(request: WrappedRequest) {
+    //    this.set
     val style2Layout = new Style2Layout()
     style2Layout.setLeftDisplaySize(150, Sizeable.Unit.PIXELS)
     this.setContent(style2Layout)
@@ -65,9 +71,9 @@ class InvoicingVaadinRoot extends Root {
     //TODO sort this out!
     eventbus.addHandler(classOf[UserLoginSuccessEvent], new Handler {
       def onAfterLogin(wantedPlace: Place) {
-        if (wantedPlace != null){
+        if (wantedPlace != null) {
           eventbus.fireEvent(new PlaceChangeEvent(wantedPlace))
-        }else{
+        } else {
           eventbus.fireEvent(new PlaceChangeEvent(AccountsPlace()))
         }
       }
@@ -99,12 +105,12 @@ class InvoicingVaadinRoot extends Root {
   }
 
   object centralActivityMapper extends ActivityMapper {
-    def getActivity(p1: Place) : Activity = {
-      if (p1.isInstanceOf[LoginPlace]){
+    def getActivity(p1: Place): Activity = {
+      if (p1.isInstanceOf[LoginPlace]) {
         injector.getInstance(classOf[LoginActivity])
-      }else if (p1.isInstanceOf[LoginPlace]){
+      } else if (p1.isInstanceOf[LoginPlace]) {
         injector.getInstance(classOf[LogoutActivity])
-      }else{
+      } else {
         null
       }
     }
@@ -112,10 +118,11 @@ class InvoicingVaadinRoot extends Root {
 
   object headerActivityMapper extends ActivityMapper {
     val toolbarComponent = new ToolbarComponent
-    def getActivity(p1: Place) : Activity = {
-      if (!p1.isInstanceOf[LoginPlace] && !p1.isInstanceOf[LogoutPlace]){
+
+    def getActivity(p1: Place): Activity = {
+      if (!p1.isInstanceOf[LoginPlace] && !p1.isInstanceOf[LogoutPlace]) {
         toolbarComponent.activity
-      }else{
+      } else {
         null
       }
     }
@@ -123,9 +130,9 @@ class InvoicingVaadinRoot extends Root {
 
   object leftActivityMapper extends ActivityMapper {
 
-    val menuComponent = new MenuComponent
+    val menuComponent = new MenuComponent(injector.getInstance(classOf[PlaceController]))
 
-    def getActivity(p1: Place) : Activity = {
+    def getActivity(p1: Place): Activity = {
       if (menuComponent.handlesPlace(p1)) {
         menuComponent.activity.setPlace(p1)
         menuComponent.activity
@@ -139,12 +146,17 @@ class InvoicingVaadinRoot extends Root {
 
     val chartOfAccountsComponent = new ChartOfAccountsGUI
 
-    def getActivity(p1: Place) : Activity = {
-      if (p1.isInstanceOf[AccountsPlace]){
+    val createNewEntriesComponent = new CreateEntryGUI
+
+    def getActivity(p1: Place): Activity = {
+      if (p1.isInstanceOf[AccountsPlace]) {
         chartOfAccountsComponent.activity
-      }else{
+      } else if (p1.isInstanceOf[CreateEntryPlace]){
+        createNewEntriesComponent.activity
+      } else{
         null
       }
     }
   }
+
 }

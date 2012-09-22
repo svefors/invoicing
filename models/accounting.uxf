@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>450</x>
+      <y>340</y>
+      <w>160</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+&lt;&lt;Value&gt;&gt;
+AccountId
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>740</x>
+      <y>340</y>
+      <w>270</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+&lt;&lt;Aggregate&gt;&gt;
+PostingRuleAccountUsage
+--
+postingRuleId
+accountId</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>440</x>
+      <y>0</y>
+      <w>230</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+&lt;&lt;Aggregate&gt;&gt;
+Account
+--
+accountingSystemId
+accountNr
+description
+type
+open : boolean
+version : Long
+--
+correctDescription(description)
+correctType(type)
+correctNr(nr)
+close()
+open()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>500</x>
+      <y>210</y>
+      <w>50</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>30;130;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>580</x>
+      <y>360</y>
+      <w>180</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>30;30;160;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>740</x>
+      <y>130</y>
+      <w>170</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+&lt;&lt;Value&gt;&gt;
+AccountBalance
+--
+currency</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>580</x>
+      <y>170</y>
+      <w>180</w>
+      <h>210</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>30;190;120;190;120;30;160;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>450</x>
+      <y>580</y>
+      <w>180</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+&lt;&lt;Aggregate&gt;&gt;
+AccountingTransaction
+--
+whenBooked
+whenRegistered
+desciption
+comment</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>700</x>
+      <y>580</y>
+      <w>180</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+&lt;&lt;Entity&gt;&gt;
+AccountPosting
+--
+accountId : AccountId
+currency</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>500</x>
+      <y>410</y>
+      <w>50</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>30;30;30;170</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>550</x>
+      <y>410</y>
+      <w>260</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>30;30;30;110;240;110;240;170</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>600</x>
+      <y>600</y>
+      <w>120</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-&gt;&gt;&gt;
+m1=2..*</panel_attributes>
+    <additional_attributes>100;30;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>580</x>
+      <y>970</y>
+      <w>360</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;View&gt;&gt;
+bg=green
+GeneralLedger
+--
+accountingSystemId
+filter(from, to) : LedgerAccount</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>660</x>
+      <y>900</y>
+      <w>50</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-&gt;&gt;&gt;&gt;</panel_attributes>
+    <additional_attributes>30;30;30;70</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>580</x>
+      <y>760</y>
+      <w>180</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>bg=green
+&lt;&lt;Value&gt;&gt;
+LedgerAccount
+--
+accountId
+accountNr
+description
+balance
+open</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>800</x>
+      <y>760</y>
+      <w>140</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>bg=green
+&lt;&lt;Value&gt;&gt;
+LedgerAccountRow
+--
+transactionNr
+description
+date
+amount
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>730</x>
+      <y>810</y>
+      <w>90</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-&gt;&gt;&gt;&gt;</panel_attributes>
+    <additional_attributes>70;30;30;30</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>0</x>
+      <y>130</y>
+      <w>60</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+//r1=1
+//q2=nr</panel_attributes>
+    <additional_attributes>30;30;40;80</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>10</x>
+      <y>710</y>
+      <w>330</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;View&gt;&gt;
+bg=green
+Accounts
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>10</x>
+      <y>400</y>
+      <w>330</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;View&gt;&gt;
+bg=green
+AccountEntry
+--
+accountingSystemId
+accountId
+accountNr
+description
+type
+vatCode
+taxReportCode
+balance
+chartOfAccountVersion
+accountVersion
+open
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>140</x>
+      <y>610</y>
+      <w>50</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-&gt;&gt;&gt;&gt;</panel_attributes>
+    <additional_attributes>30;30;30;100</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>30</x>
+      <y>160</y>
+      <w>90</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+//&lt;&lt;Aggregate&gt;&gt;
+//ChartOfAccounts
+//--
+//accountingSystemId
+//addAccountNr(nr, accountId)
+//changeAccountNr(nr, accountId)
+//removeAccountNr(nr)
+
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

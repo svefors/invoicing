@@ -26,15 +26,15 @@ trait ContainerQuery {
    * @return a List of items matching the filters.
    */
   //TODO consider sorting parameeter
-  abstract def loadItems(offset : Int, limit : Int, sortProperties : Array[AnyRef], sortAscending : Array[Boolean],  filters : Seq[Filter]) : List[Item]
+  def loadItems(offset : Int, limit : Int, sortProperties : Array[AnyRef], sortAscending : Array[Boolean],  filters : Seq[Filter]) : List[Item]
 
-  abstract def loadItem(itemId : Any) : Item
+  def loadItem(itemId : Any) : Item
 
   /**
    * the size when filters are applied
    * @param filter
    * @return
    */
-  abstract def size(filter : Filter*) : Int
+  def size(filter : Filter*) : Int
 
 }

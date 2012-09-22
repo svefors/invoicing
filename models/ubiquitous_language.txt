@@ -1,0 +1,17 @@
+=== Accounting ===
+- An Account can be closed.
+- If an Account is closed then it is not possible to post transactions to it.
+- If viewed in the Ledger, if an account is closed, and there are no transactions within 
+the view period, the account is not shown.
+- The Chart of Accounts show only the open accounts(or a redline through closed ones?)
+- If a closed account does not have transactions posted to it, 
+then it is possible to delete it.
+- It is possible to repoen an account.
+- It is not possible for two accounts, closed or open, to have the same account nr. 
+
+
+Posting rules: Possible solutions
+- If a posting rule uses a closed account, it can override and reopen the closed account?
+- Put the commands on an error queue until the administrator has solved the problem. (+1)
+- Write checks in the UI to check if there is a posting rule that uses the account. (+1)
+
