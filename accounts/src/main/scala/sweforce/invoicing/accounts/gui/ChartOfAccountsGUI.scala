@@ -1,4 +1,5 @@
-package sweforce.invoicing.accounts
+package sweforce.invoicing.accounts.gui
+
 
 import sweforce.gui.ap.activity.AbstractActivity
 import sweforce.gui.display.{VaadinView, Display}
@@ -6,8 +7,6 @@ import sweforce.gui.event.EventBus
 
 import sweforce.gui.ap.place.token.{PlaceTokenizer, Prefix}
 import scala.collection.JavaConversions._
-import sweforce.invoicing.accounts.AccountType._
-import sweforce.invoicing.accounts.VatLevel._
 import currency.Currency
 import currency.Currency._
 
@@ -23,6 +22,18 @@ import com.vaadin.ui.Button.{ClickEvent, ClickListener}
 import com.vaadin.ui._
 import com.vaadin.data.util.{IndexedContainer, AbstractContainer, AbstractInMemoryContainer}
 import reflect.BeanProperty
+
+import sweforce.invoicing.accounts.domain.AccountPropertyId._
+import sweforce.invoicing.accounts.domain.AccountType._
+import sweforce.invoicing.accounts.domain.VatLevel._
+import sweforce.invoicing.accounts.infrastructure._
+
+import sweforce.invoicing.prevalence.{RootStoreUnitOfWork, RootStore}
+import sweforce.invoicing.accounts.app.AccountsFactory
+import sweforce.invoicing.accounts.domain.{VatLevel, AccountType, AccountPropertyId, AccountId}
+import sweforce.invoicing.accounts.domain.AccountPropertyId.AccountPropertyId
+import sweforce.invoicing.accounts.domain.AccountType.AccountType
+import sweforce.invoicing.accounts.domain.VatLevel.VatLevel
 
 
 /**
@@ -50,12 +61,22 @@ class ChartOfAccountsGUI {
     }
 
     def removeAccount(accountId: AccountId) {
-      model.accountStore.delete(accountId)
+      //TODO consider publishing event to the local bus after update
+      val accountsEditor = AccountsEditorRepository.load(AccountsFactory.accountStoreId)
+      val uow = new RootStoreUnitOfWork
+      uow.registerStateEditor(accountsEditor, AccountsEditorRepository)
+      accountsEditor.delete(accountId)
+      uow.commit()
+      //      RootStoreCommandBus.dispatch(new PrevaylerAccountStoreCommandHandler().createPrevaylerTransaction(DeleteAccount(AccountsFactory.accountStoreId, accountId)))
     }
 
     def updateAccountProperty(accountId: AccountId, propertyId: AccountPropertyId.Value, value: Any) {
-
-      model.accountStore.set(accountId, propertyId, value)
+      val accountsEditor = AccountsEditorRepository.load(AccountsFactory.accountStoreId)
+      val uow = new RootStoreUnitOfWork
+      uow.registerStateEditor(accountsEditor, AccountsEditorRepository)
+      accountsEditor.writeProperty(accountId, propertyId, value)
+      uow.commit()
+//      RootStoreCommandBus.dispatch(new PrevaylerAccountStoreCommandHandler().createPrevaylerTransaction(AccountPropertyCommand(AccountsFactory.accountStoreId, accountId, propertyId, value)))
     }
   }
 
@@ -130,12 +151,14 @@ class ChartOfAccountsGUI {
       override def onEditedPropertyChange(itemId: AnyRef, propertyId: AnyRef) {
         presenter.updateAccountProperty(itemId.asInstanceOf[AccountId],
           propertyId.asInstanceOf[AccountPropertyId.Value],
-          getContainerProperty(itemId, propertyId))
+          getContainerProperty(itemId, propertyId).getValue)
       }
 
       override def isEditable(propertyId: AnyRef) = {
         AccountPropertyId.values.contains(propertyId)
       }
+
+
     }
 
 
@@ -150,7 +173,7 @@ class ChartOfAccountsGUI {
       addComponents(addAccountButton, removeAccountButton, searchFilter)
 
       setComponentAlignment(addAccountButton, Alignment.MIDDLE_LEFT)
-      setComponentAlignment(addAccountButton, Alignment.MIDDLE_LEFT)
+      setComponentAlignment(removeAccountButton, Alignment.MIDDLE_LEFT)
       setComponentAlignment(searchFilter, Alignment.MIDDLE_RIGHT)
       setExpandRatio(searchFilter, 1.0f)
 
@@ -206,7 +229,7 @@ class ChartOfAccountsGUI {
           select.addItem(AccountType.Expense)
           select.addItem(AccountType.Income)
           return select
-        } else if(propertyId == AccountPropertyId.vatLevel){
+        } else if (propertyId == AccountPropertyId.vatLevel) {
           val select: ComboBox = new ComboBox() {
             setWidth("100%")
             setNullSelectionAllowed(true)
@@ -218,7 +241,10 @@ class ChartOfAccountsGUI {
           select.addItem(VatLevel.FurtherReduced).getItemProperty("caption").setValue("Further Reduced")
           return select
         } else {
-          return defaultFactory.createField(container, itemId, propertyId, uiContext)
+          val field = defaultFactory.createField(container, itemId, propertyId, uiContext)
+          if (field.isInstanceOf[TextField])
+            field.asInstanceOf[TextField].setNullRepresentation("")
+          return field
         }
       }
 
@@ -228,6 +254,10 @@ class ChartOfAccountsGUI {
 
 
   }
+
+  /*
+ should
+  */
 
   //  object accountTypeConverter extends Converter[String, AccountType] {
   //    def getPresentationType = {
@@ -255,9 +285,9 @@ class ChartOfAccountsGUI {
   //  }
 
   object model extends Property.ValueChangeListener {
-    lazy val accountStore = AccountStore.baskontoplan()
-
-    var commandBuffer = List[AccountStoreCommand]()
+//    lazy val accountStoreRead = RootStore.getInstance().loadReadStore(AccountsFactory.accountStoreId)
+    lazy val accounts = RootStore.getInstance().accountSettings(AccountsFactory.accountStoreId)
+//    var commandBuffer = List[AccountStoreCommand]()
 
 
     def valueChange(event: ValueChangeEvent) {
@@ -272,17 +302,20 @@ class ChartOfAccountsGUI {
       addContainerProperty(AccountPropertyId.vatLevel, classOf[VatLevel], null)
       addContainerProperty(AccountPropertyId.vatCode, classOf[String], null)
       addContainerProperty(AccountPropertyId.taxCode, classOf[String], null)
-      addContainerProperty("balance", classOf[Currency], Currency(0, "SEK"))
-      accountStore.accountIds().foreach(accountId => {
+      accounts.accountIds().foreach(accountId => {
         addItem(accountId)
+        getContainerPropertyIds.foreach(propertyId => {
+          getContainerProperty(accountId, propertyId).setValue(accounts.readProperty(accountId, propertyId.asInstanceOf[AccountPropertyId]))
+        })
       })
-      accountStore.accountMap.foreach({
-        case (propertyId, propertyMap) =>
-          propertyMap.foreach({
-            case (accountId, value) =>
-              getContainerProperty(accountId, propertyId).setValue(value)
-          })
-      })
+      addContainerProperty("balance", classOf[Currency], Currency(0, "SEK"))
+      //      accountStoreRead.accountMap.foreach({
+      //        case (propertyId, propertyMap) =>
+      //          propertyMap.foreach({
+      //            case (accountId, value) =>
+      //              getContainerProperty(accountId, propertyId).setValue(value)
+      //          })
+      //      })
     }
 
   }

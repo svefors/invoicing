@@ -1,10 +1,12 @@
-package sweforce.invoicing.accounts
+package sweforce.invoicing.accounts.gui
 
 import sweforce.gui.ap.activity.AbstractActivity
 import sweforce.gui.display.{VaadinView, Display}
 import sweforce.gui.event.EventBus
 import sweforce.gui.ap.place.Place
+
 //import vaadin.scala._
+
 import sweforce.gui.ap.place.token.{PlaceTokenizer, Prefix}
 
 

@@ -23,7 +23,17 @@ allprojects {
     group = "sweforce.invoicing"
     project.version = "1.0"
 }
+/*
 
+    <dependency>
+      <groupId>org.prevayler</groupId>
+      <artifactId>prevayler-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.prevayler</groupId>
+      <artifactId>prevayler-factory</artifactId>
+    </dependency>
+ */
 subprojects {
     apply plugin: 'java'
     apply plugin: 'scala'
@@ -38,11 +48,14 @@ subprojects {
                 'sweforce.vaadin:activitiesplaces:1.2.1',
                 'sweforce.vaadin:security-shiro:1.2.1',
                 'sweforce.vaadin:layout:1.2.1',
-                'com.vaadin:vaadin-server:7.0.0.beta1',
-                'com.vaadin:vaadin-client-compiled:7.0.0.beta1',
-                'com.vaadin:vaadin-themes:7.0.0.beta1',
+                'com.vaadin:vaadin-server:7.0.0.beta3',
+                'com.vaadin:vaadin-client-compiled:7.0.0.beta3',
+                'com.vaadin:vaadin-themes:7.0.0.beta3',
                 'javax.validation:validation-api:1.0.0.GA',
                 'org.apache.bval:bval-jsr303:0.4',
+                'org.prevayler:prevayler-core:2.5',
+                'org.prevayler:prevayler-factory:2.5',
+                'org.prevayler.extras:prevayler-xstream:2.5',
 //                "org.vaadin.addons:scaladin:1.0.0",
                 'org.scala-lang:scala-library:2.9.2'
 //,                project(':scaladin')

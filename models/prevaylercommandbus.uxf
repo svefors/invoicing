@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.5">
+  <zoom_level>8</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1728</x>
+      <y>352</y>
+      <w>144</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;trait&gt;&gt;
+AccountStoreRead
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>400</x>
+      <y>656</y>
+      <w>208</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>Prevayler
+--
+execute(transaction)
+prevalentSystem()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1632</x>
+      <y>104</y>
+      <w>280</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>AccountStoreCommandHandler
+--
+handle(AccountStoreCommand)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1728</x>
+      <y>280</y>
+      <w>144</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;trait&gt;&gt;
+AccountStoreWrite
+--
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>480</x>
+      <y>584</y>
+      <w>40</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>24;24;24;72</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1704</x>
+      <y>192</y>
+      <w>128</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Write
+--
+dispatch(Command)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1736</x>
+      <y>128</y>
+      <w>40</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>24;24;24;64</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1056</x>
+      <y>848</y>
+      <w>256</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>CommandHandlerRegistration
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>400</x>
+      <y>240</y>
+      <w>200</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>AggregateCommandBus
+--
+dispatch(command)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>400</x>
+      <y>936</y>
+      <w>280</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>ValidatingCommandBus
+--
+handle(AccountStoreCommand)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>400</x>
+      <y>800</y>
+      <w>280</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>PrevalerCommandBus
+--
+dispatch(Command)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>784</x>
+      <y>752</y>
+      <w>200</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>AggregateCommandTransaction
+--
+executeOn(prevalentSystem)
+getCommandHandler</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1096</x>
+      <y>744</y>
+      <w>168</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Command
+--
+-- data only!
+-- immutable</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>872</x>
+      <y>632</y>
+      <w>168</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Transaction
+--
+executeOn(prevalentSystem)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>840</x>
+      <y>656</y>
+      <w>128</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>112;24;24;96</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>960</x>
+      <y>752</y>
+      <w>152</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=1.*</panel_attributes>
+    <additional_attributes>136;24;24;32</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>656</x>
+      <y>752</y>
+      <w>144</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>128;24;24;72</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>560</x>
+      <y>272</y>
+      <w>288</w>
+      <h>496</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt; dispatch(command)</panel_attributes>
+    <additional_attributes>24;24;200;432;272;480</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>896</x>
+      <y>208</y>
+      <w>184</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>StoreCommandHandler
+--
+id : UUID
+--
+handle(command)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>656</x>
+      <y>72</y>
+      <w>256</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+</panel_attributes>
+    <additional_attributes>240;184;24;24</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1240</x>
+      <y>448</y>
+      <w>272</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>AccountStore
+--
+accountIds : Set[AccountID]
+accountDescriptions : Map[AccountId, String]
+accountTypes : Map[AccountId, String]
+--
+set(AccountPropertyId, value)
+get[T](AccountPropertyId) : T</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1056</x>
+      <y>232</y>
+      <w>240</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>24;24;224;56</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>576</x>
+      <y>248</y>
+      <w>296</w>
+      <h>520</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>280;504;232;352;24;24</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>400</x>
+      <y>440</y>
+      <w>200</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;trait&gt;&gt;
+CommandBusLocator
+--
+getCommandBus()
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>400</x>
+      <y>536</y>
+      <w>208</w>
+      <h>72</h>
+    </coordinates>
+    <panel_attributes>RootThingy
+--
+serialVersionUID = 1
+--
+getCommandBus() : CommandBus</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>480</x>
+      <y>472</y>
+      <w>40</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>24;24;24;64</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>472</x>
+      <y>272</y>
+      <w>40</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.</panel_attributes>
+    <additional_attributes>24;24;24;168</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Note</type>
+    <coordinates>
+      <x>0</x>
+      <y>24</y>
+      <w>424</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>bg=yellow
+if (command.instanceOf[AccountCommand]{
+  if (accountStoremap.contains(id)
+  	accountStoreMap.get(id).handle(command)
+  else
+    //put a new thing there and invoke
+}</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>8</x>
+      <y>88</y>
+      <w>56</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>40;24;24;96</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>0</x>
+      <y>472</y>
+      <w>200</w>
+      <h>192</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;trait&gt;&gt;
+CommandBus
+--
+dispatch(command)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>176</x>
+      <y>248</y>
+      <w>240</w>
+      <h>344</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>24;328;224;24</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>176</x>
+      <y>584</y>
+      <w>240</w>
+      <h>272</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>24;24;224;256</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>488</x>
+      <y>704</y>
+      <w>40</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>24;24;24;96</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>584</x>
+      <y>672</y>
+      <w>216</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;call&gt;&gt;</panel_attributes>
+    <additional_attributes>200;96;24;24</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1280</x>
+      <y>248</y>
+      <w>184</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>AccountsCommandHandler
+--
+
+--
+handle(command)
+validate(command)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>1352</x>
+      <y>320</y>
+      <w>40</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>24;128;24;24</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>544</x>
+      <y>0</y>
+      <w>232</w>
+      <h>96</h>
+    </coordinates>
+    <panel_attributes>CommandHandlerRegistry
+--
+retrieveHandler(command) : CommandHandler
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>912</x>
+      <y>0</y>
+      <w>320</w>
+      <h>104</h>
+    </coordinates>
+    <panel_attributes>CommandHandlerFactory
+--
+createHandler(command) : CommandHandler
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>584</x>
+      <y>536</y>
+      <w>672</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>656;24;24;24</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>952</x>
+      <y>80</y>
+      <w>128</w>
+      <h>144</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;create&gt;&gt;</panel_attributes>
+    <additional_attributes>24;128;112;24</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>472</x>
+      <y>72</y>
+      <w>144</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>128;24;24;168</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>528</x>
+      <y>80</y>
+      <w>472</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>456;24;24;160</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>656</x>
+      <y>272</y>
+      <w>1016</w>
+      <h>712</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>808;24;1000;24;1000;696;24;696</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>1304</x>
+      <y>744</y>
+      <w>168</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>/AccountCommand/
+--
+accountStoreId : UUID
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

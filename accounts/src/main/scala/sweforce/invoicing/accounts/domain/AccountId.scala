@@ -1,4 +1,4 @@
-package sweforce.invoicing.accounts
+package sweforce.invoicing.accounts.domain
 
 import java.util.UUID
 
@@ -12,14 +12,14 @@ import java.util.UUID
 @SerialVersionUID(1l)
 case class AccountId(val id: String) {
 
-  def this(uuid: UUID) = this (uuid.toString)
+  def this(uuid: UUID) = this(uuid.toString)
 
-  def this() = this (UUID.randomUUID())
+  def this() = this(UUID.randomUUID())
 
 }
 
 object AccountId {
   def apply() = {
-    new AccountId ()
+    new AccountId()
   }
 }

@@ -1,12 +1,14 @@
-package sweforce.invoicing.accounts
+package sweforce.invoicing.accounts.domain
 
 /**
  * Created with IntelliJ IDEA.
  * User: sveffa
- * Date: 9/21/12
- * Time: 11:26 PM
+ * Date: 10/3/12
+ * Time: 4:35 PM
  * To change this template use File | Settings | File Templates.
  */
-class InMemoryAccountStore {
+trait AccountSettings {
+
+
 
 }

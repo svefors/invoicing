@@ -3,6 +3,7 @@ package sweforce.invoicing.webapp
 import com.vaadin.server.Sizeable
 import com.vaadin.server.WrappedRequest
 import com.google.inject.{Provides, AbstractModule, Guice}
+
 import menu.MenuComponent
 import sweforce.vaadin.security.SecureMvpModule
 import sweforce.vaadin.security.shiro.ShiroSecurityModule
@@ -18,12 +19,13 @@ import sweforce.gui.ap.place.history.{PlaceTokenizerStore, PlaceHistoryModule}
 import sweforce.gui.ap.place.history.PlaceTokenizerStore.Builder
 import sweforce.gui.ap.activity.{Activity, ActivityManager, ActivityMapper}
 import sweforce.vaadin.security.login.UserLoginSuccessEvent.Handler
-import toolbar.ToolbarComponent
-import sweforce.invoicing.accounts.{ChartOfAccountsGUI, AccountsPlaceTokenizer, AccountsPlace}
+import sweforce.invoicing.accounts.gui.{ChartOfAccountsGUI, AccountsPlaceTokenizer, AccountsPlace}
 import com.vaadin.ui.{UI}
 import com.vaadin.annotations.{PreserveOnRefresh, Theme}
 import sweforce.gui.ap.place.controller.PlaceController
 import sweforce.invoicing.entries.create.{CreateEntryGUI, CreateEntryPlace, CreateEntryPlaceTokenizer}
+import toolbar.ToolbarComponent
+import sweforce.invoicing.accounts.app.AccountsFactory
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,6 +38,7 @@ import sweforce.invoicing.entries.create.{CreateEntryGUI, CreateEntryPlace, Crea
 @PreserveOnRefresh
 class InvoicingVaadinRoot extends UI {
 
+  AccountsFactory.ensureDemoDataIsCreated()
 
   val injector = Guice.createInjector(
     new VaadinModule(this),

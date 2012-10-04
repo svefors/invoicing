@@ -1,4 +1,4 @@
-package sweforce.invoicing.accounts
+package sweforce.invoicing.accounts.domain
 
 import java.util.UUID
 
@@ -10,7 +10,7 @@ import java.util.UUID
  * Time: 9:29 PM
  * To change this template use File | Settings | File Templates.
  */
-
+@SerialVersionUID(1l)
 object AccountType extends Enumeration with Serializable {
   type AccountType = Value
   val Asset, Debt, Equity, Income, Expense = Value

@@ -123,7 +123,8 @@ trait EditableTable extends Table {
 
     class ForwardAction(val keyCode: Int) extends ShortcutListener("Next Field", resource, keyCode) {
       def handleAction(sender: Any, target: Any) {
-        if (!oldValue.equals(getContainerProperty(editingItemId, editingPropertyId).getValue)){
+        if (oldValue != null && !oldValue.equals(getContainerProperty(editingItemId, editingPropertyId).getValue)
+        || oldValue == null && getContainerProperty(editingItemId, editingPropertyId).getValue != null){
           onEditedPropertyChange(editingItemId, editingPropertyId)
         }
         var nextEditingPropertyId = getNextEditablePropertyId(getVisibleColumns, editingPropertyId)
@@ -138,7 +139,7 @@ trait EditableTable extends Table {
 
     class BackwardAction(val keyCode: Int) extends ShortcutListener("Previous Field", resource, keyCode, ModifierKey.SHIFT) {
       def handleAction(sender: Any, target: Any) {
-        if (!oldValue.equals(getContainerProperty(editingItemId, editingPropertyId).getValue)){
+        if (oldValue != null && !oldValue.equals(getContainerProperty(editingItemId, editingPropertyId).getValue)){
           onEditedPropertyChange(editingItemId, editingPropertyId)
         }
         var prevEditingPropertyId = getNextEditablePropertyId(getVisibleColumns.reverse, editingPropertyId)

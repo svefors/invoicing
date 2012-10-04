@@ -5,7 +5,6 @@ import sweforce.gui.display.{VaadinView, Display}
 import sweforce.gui.event.EventBus
 
 import sweforce.gui.ap.place.{PlaceChangeEvent, Place}
-import sweforce.invoicing.accounts.AccountsPlace
 import com.vaadin.data.Property.{ValueChangeEvent, ValueChangeListener}
 import com.vaadin.data.util.HierarchicalContainer
 import com.vaadin.ui.{Alignment, Tree, VerticalLayout}
@@ -13,6 +12,7 @@ import javax.inject.{Inject, Singleton}
 import sweforce.gui.ap.place.controller.PlaceController
 import reflect.BeanProperty
 import sweforce.invoicing.entries.create.CreateEntryPlace
+import sweforce.invoicing.accounts.gui.AccountsPlace
 
 /**
  * Created with IntelliJ IDEA.

@@ -1,4 +1,4 @@
-package sweforce.invoicing.accounts
+package sweforce.invoicing.accounts.domain
 
 /**
  * Created by IntelliJ IDEA.
@@ -8,7 +8,8 @@ package sweforce.invoicing.accounts
  * To change this template use File | Settings | File Templates.
  */
 
-object VatLevel extends Enumeration{
+@SerialVersionUID(1l)
+object VatLevel extends Enumeration with Serializable {
   type VatLevel = Value
   val Normal, Reduced, FurtherReduced = Value
 }
