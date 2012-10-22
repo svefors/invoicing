@@ -2,11 +2,6 @@ package sweforce.invoicing.accounts.infrastructure
 
 import sweforce.state.State
 import sweforce.invoicing.accounts.domain.{AccountType, VatLevel, AccountPropertyId, AccountId}
-import sweforce.invoicing.accounts.infrastructure._
-import sweforce.invoicing.accounts.infrastructure.AccountPropertyChanged
-import sweforce.invoicing.accounts.infrastructure.AccountDeleted
-import sweforce.invoicing.accounts.infrastructure.AccountAdded
-import sweforce.invoicing.accounts.infrastructure.Accounts
 import scala.Some
 import java.util.UUID
 
@@ -18,10 +13,9 @@ import java.util.UUID
  * To change this template use File | Settings | File Templates.
  */
 @SerialVersionUID(1l)
-case class Accounts(val accountStoreId: Any, val accountMap: Map[AccountPropertyId.Value, Map[AccountId, Any]]) extends State[Accounts] {
+case class Accounts(val accountStoreId: Any, val accountIdSet : Set[AccountId], val accountMap: Map[AccountPropertyId.Value, Map[AccountId, Any]]) extends State[Accounts] {
 
-
-  def this(accountStoreId: Any) = this(accountStoreId, Map[AccountPropertyId.Value, Map[AccountId, Any]]())
+  def this(accountStoreId: Any) = this(accountStoreId, Set[AccountId](), Map[AccountPropertyId.Value, Map[AccountId, Any]]())
 
   def this() = this(UUID.randomUUID())
 
@@ -40,7 +34,8 @@ case class Accounts(val accountStoreId: Any, val accountMap: Map[AccountProperty
   }
 
   private def delete(accountId: AccountId) = {
-    writeProperty(accountId, AccountPropertyId.accountNr, null)
+    copy(accountIdSet = accountIdSet - accountId)
+      .writeProperty(accountId, AccountPropertyId.accountNr, null)
       .writeProperty(accountId, AccountPropertyId.accountDescription, null)
       .writeProperty(accountId, AccountPropertyId.vatLevel, null)
       .writeProperty(accountId, AccountPropertyId.accountType, null)
@@ -51,7 +46,8 @@ case class Accounts(val accountStoreId: Any, val accountMap: Map[AccountProperty
 
   private def add(accountId: AccountId, accountNr: String, accountDescription: String, vatLevel: VatLevel.Value, accountType: AccountType.Value,
                   vatCode: String, taxCode: String): Accounts = {
-    writeProperty(accountId, AccountPropertyId.accountNr, accountNr)
+    copy(accountIdSet = accountIdSet + accountId)
+      .writeProperty(accountId, AccountPropertyId.accountNr, accountNr)
       .writeProperty(accountId, AccountPropertyId.accountDescription, accountDescription)
       .writeProperty(accountId, AccountPropertyId.vatLevel, vatLevel)
       .writeProperty(accountId, AccountPropertyId.accountType, accountType)
@@ -81,10 +77,11 @@ case class Accounts(val accountStoreId: Any, val accountMap: Map[AccountProperty
   }
 
   def accountIds() = {
-    accountMap.get(AccountPropertyId.accountId) match {
-      case Some(map) => map.keySet
-      case None => Set[AccountId]()
-    }
+    accountIdSet
+//    accountMap.get(AccountPropertyId.accountId) match {
+//      case Some(map) => map.keySet
+//      case None => Set[AccountId]()
+//    }
   }
 
   def readProperty[T](accountId: AccountId, propertyId: AccountPropertyId.Value): T = {

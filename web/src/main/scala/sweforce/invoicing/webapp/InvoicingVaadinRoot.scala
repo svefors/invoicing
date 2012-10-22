@@ -1,7 +1,7 @@
 package sweforce.invoicing.webapp
 
-import com.vaadin.server.Sizeable
-import com.vaadin.server.WrappedRequest
+import com.vaadin.server.{VaadinRequest, Sizeable}
+
 import com.google.inject.{Provides, AbstractModule, Guice}
 
 import menu.MenuComponent
@@ -11,7 +11,7 @@ import sweforce.gui.ap.vaadin.VaadinModule
 import sweforce.vaadin.security.login.{UserLoginSuccessEvent, LoginActivity, LoginPlace}
 import sweforce.vaadin.security.logout.{LogoutActivity, LogoutPlace}
 import sweforce.vaadin.layout.style2.Style2Layout
-import sweforce.gui.event.EventBus
+import sweforce.event.EventBus
 import com.google.inject.name.Names
 import sweforce.gui.ap.place.{PlaceChangeEvent, PlaceChangeRequestEvent, PlacesRunner, Place}
 import collection.JavaConversions._
@@ -26,6 +26,7 @@ import sweforce.gui.ap.place.controller.PlaceController
 import sweforce.invoicing.entries.create.{CreateEntryGUI, CreateEntryPlace, CreateEntryPlaceTokenizer}
 import toolbar.ToolbarComponent
 import sweforce.invoicing.accounts.app.AccountsFactory
+import grizzled.slf4j.Logging
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,7 +37,7 @@ import sweforce.invoicing.accounts.app.AccountsFactory
  */
 @Theme("invoicing")
 @PreserveOnRefresh
-class InvoicingVaadinRoot extends UI {
+class InvoicingVaadinRoot extends UI with Logging {
 
   AccountsFactory.ensureDemoDataIsCreated()
 
@@ -65,7 +66,9 @@ class InvoicingVaadinRoot extends UI {
 
   }
 
-  def init(request: WrappedRequest) {
+
+  def init(request: VaadinRequest) {
+    debug("init")
     //    this.set
     val style2Layout = new Style2Layout()
     style2Layout.setLeftDisplaySize(150, Sizeable.Unit.PIXELS)
@@ -104,7 +107,7 @@ class InvoicingVaadinRoot extends UI {
         t.printStackTrace
       }
     }
-    //    centralActivityMapper.
+    debug("init-end")
   }
 
   object centralActivityMapper extends ActivityMapper {

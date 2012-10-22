@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="11.3">
+  <zoom_level>10</zoom_level>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>510</x>
+      <y>260</y>
+      <w>510</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>&lt;interface&gt;&gt;
+Command
+--
+execute
+canExecute
+canExecuteChangeNotifier() 
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>280</x>
+      <y>30</y>
+      <w>410</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Notifier[H &lt;: EventHandler]
+--
+registerHandler(H) : HandlerRegistration</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Class</type>
+    <coordinates>
+      <x>170</x>
+      <y>260</y>
+      <w>200</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>/NotAnEventBusNotifier/
+--
+listeners : Set[H]
+--
+-fireEvent(Event)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>240</x>
+      <y>80</y>
+      <w>260</w>
+      <h>200</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>240;30;240;60;30;60;30;180</additional_attributes>
+  </element>
+  <element>
+    <type>com.umlet.element.Relation</type>
+    <coordinates>
+      <x>340</x>
+      <y>290</y>
+      <w>190</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>30;30;170;30</additional_attributes>
+  </element>
+</diagram>

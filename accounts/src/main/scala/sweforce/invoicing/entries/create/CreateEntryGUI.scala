@@ -36,6 +36,16 @@ import java.util.UUID
  */
 class CreateEntryGUI {
 
+  /*
+  how to refresh container?
+  - use eventbus?
+  same accounts used all over in the same app.
+  when refresh the container?
+    - after a successful update
+    - after an unsuccessful update
+
+
+   */
   object activity extends AbstractActivity with view.Presenter {
     def start(p1: Display, p2: EventBus) {
       view.presenter = this
@@ -208,7 +218,7 @@ class CreateEntryGUI {
                 .setValue(select.getContainerProperty(select.getValue, AccountPropertyId.accountDescription))
             }
           })
-          if (accountPostings.get)
+//          if (accountPostings.get)
           return select
         } else {
           return defaultFactory.createField(container, itemId, propertyId, uiContext)

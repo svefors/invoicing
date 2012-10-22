@@ -6,6 +6,8 @@ import sweforce.invoicing.accounts.domain.{AccountType, VatLevel, AccountPropert
 
 class AccountsEditor(val accountStoreId: Any, var state: Accounts) extends StateEditor[Accounts] {
 
+  def this(accountStoreId: Any) = this(accountStoreId, new Accounts())
+
   def writeProperty(accountId: AccountId, propertyId: AccountPropertyId.Value, propertyValue: Any) = {
     this.applyChange(AccountPropertyChanged(accountStoreId, accountId, propertyId, propertyValue))
   }

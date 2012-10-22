@@ -166,20 +166,20 @@ abstract class PaginationContainer(val containerQuery: ContainerQuery, val conta
   /*
   * OVERRIDEN PUBLIC LISTENERS
   */
-  override def addListener(listener: PropertySetChangeListener) {
-    super.addListener(listener)
+  override def addListener(listener: PropertySetChangeListener) = {
+    super.addPropertySetChangeListener(listener)
   }
 
   override def removeListener(listener: PropertySetChangeListener) {
-    super.removeListener(listener)
+    super.removePropertySetChangeListener(listener)
   }
 
   override def addListener(listener: ItemSetChangeListener) {
-    super.addListener(listener)
+    super.addItemSetChangeListener(listener)
   }
 
   override def removeListener(listener: ItemSetChangeListener) {
-    super.removeListener(listener)
+    super.removeItemSetChangeListener(listener)
   }
 
 

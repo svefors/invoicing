@@ -18,3 +18,4 @@
 *.jar
 *.war
 *.ear
+/Prevalence/*.journal

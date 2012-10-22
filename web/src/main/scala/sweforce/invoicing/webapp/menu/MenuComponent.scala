@@ -10,7 +10,7 @@ import com.vaadin.data.util.HierarchicalContainer
 import com.vaadin.ui.{Alignment, Tree, VerticalLayout}
 import javax.inject.{Inject, Singleton}
 import sweforce.gui.ap.place.controller.PlaceController
-import reflect.BeanProperty
+
 import sweforce.invoicing.entries.create.CreateEntryPlace
 import sweforce.invoicing.accounts.gui.AccountsPlace
 
@@ -195,7 +195,6 @@ class MenuComponent(val placeController: PlaceController) {
   object menuContainer extends HierarchicalContainer {
 
     addContainerProperty("caption", classOf[String], "CAPTION MISSING")
-
 
     def addMenuItem(menuItem: MenuItem) {
       this.addItem(menuItem)
