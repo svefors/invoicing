@@ -16,6 +16,10 @@ import com.vaadin.ui.HorizontalLayout
 import com.vaadin.ui.VerticalLayout
 import com.vaadin.ui.Table
 import sweforce.vaadin.command.button.CommandButton
+import sweforce.vaadin.keyboard.{KeyGesture, KeyBinding, CommandActionHandler}
+import com.vaadin.event.ShortcutAction.KeyCode
+import com.vaadin.event.ShortcutListener
+import com.vaadin.server.Resource
 
 /**
  * Created with IntelliJ IDEA.
@@ -26,9 +30,21 @@ import sweforce.vaadin.command.button.CommandButton
  */
 class AccountSettingsView extends VaadinView {
 
-  def setViewModel(viewModel: ViewModel) {
+  /**
+   * binds this view to the viewmodel
+   * @param viewModel
+   */
+  def bind(viewModel: ViewModel) {
     addAccountButton.setCommand(viewModel.getAddCommand)
     removeAccountButton.setCommand(viewModel.getRemoveCommand)
+    bottomToolbar.removeAllActionHandlers();
+    bottomToolbar.addShortcutListener(new ShortcutListener("Search", null.asInstanceOf[Resource], KeyCode.ENTER) {
+      def handleAction(sender: Any, target: Any) {
+        if (target == searchFilter)
+          viewModel.getSearchCommand.execute()
+      }
+    })
+
     accountOverviewTable.setContainerDataSource(viewModel.getAccountsContainer)
   }
 
@@ -43,7 +59,7 @@ class AccountSettingsView extends VaadinView {
     setInputPrompt("Search")
   }
 
-  lazy val bottomToolbar = new HorizontalLayout() {
+  lazy val bottomToolbar = new Panel(new HorizontalLayout() {
     setWidth("100%")
     setHeight("50px")
     setMargin(true)
@@ -54,9 +70,9 @@ class AccountSettingsView extends VaadinView {
     setComponentAlignment(removeAccountButton, Alignment.MIDDLE_LEFT)
     setComponentAlignment(searchFilter, Alignment.MIDDLE_RIGHT)
     setExpandRatio(searchFilter, 1.0f)
-  }
+  })
 
-  lazy val rootContainer = new VerticalLayout() {
+  lazy val rootContainer :VerticalLayout = new VerticalLayout() {
     setSizeFull()
     addComponents(accountOverviewTable, bottomToolbar)
     setComponentAlignment(accountOverviewTable, Alignment.TOP_LEFT)
@@ -69,7 +85,7 @@ class AccountSettingsView extends VaadinView {
     setSelectable(true)
     setImmediate(true)
     //    setContainerDataSource(presenter.accountsContainer)
-    getVisibleColumns(
+    setVisibleColumns(
       List(AccountPropertyId.accountNr, AccountPropertyId.accountDescription,
         AccountPropertyId.vatLevel,
         AccountPropertyId.accountType,
@@ -77,6 +93,7 @@ class AccountSettingsView extends VaadinView {
         AccountPropertyId.taxCode,
         "balance").toArray
     )
+
     setColumnHeader(AccountPropertyId.accountNr, "Nr")
     setColumnHeader(AccountPropertyId.accountDescription, "Description")
     setColumnHeader(AccountPropertyId.accountType, "Type")
@@ -86,19 +103,19 @@ class AccountSettingsView extends VaadinView {
     setColumnHeader("balance", "Balance")
     sort(Array(AccountPropertyId.accountNr), Array(true))
 
-    //TODO MOVE!
-    override def onEditedPropertyChange(itemId: AnyRef, propertyId: AnyRef) {
-      presenter.updateAccountProperty(itemId.asInstanceOf[AccountId],
-        propertyId.asInstanceOf[AccountPropertyId.Value],
-        getContainerProperty(itemId, propertyId).getValue)
-    }
-
-    //TODO Move this?
-    override def isEditable(propertyId: AnyRef) = {
-      AccountPropertyId.values.contains(propertyId)
-    }
-
-    setTableFieldFactory(fieldFactory)
+//    //TODO MOVE!
+//    override def onEditedPropertyChange(itemId: AnyRef, propertyId: AnyRef) {
+//      presenter.updateAccountProperty(itemId.asInstanceOf[AccountId],
+//        propertyId.asInstanceOf[AccountPropertyId.Value],
+//        getContainerProperty(itemId, propertyId).getValue)
+//    }
+//
+//    //TODO Move this?
+//    override def isEditable(propertyId: AnyRef) = {
+//      AccountPropertyId.values.contains(propertyId)
+//    }
+//
+//    setTableFieldFactory(fieldFactory)
 
   }
 
@@ -137,7 +154,7 @@ class AccountSettingsView extends VaadinView {
         return select
       } else {
         val field = defaultFactory.createField(container, itemId, propertyId, uiContext)
-        if (field.isInstanceOf[TextField]){
+        if (field.isInstanceOf[TextField]) {
           val tf = field.asInstanceOf[TextField]
           //            tf.setNullRepresentation("")
           //            tf.addValidator(new RegexpValidator("[1-9][0-9]{4}",

@@ -41,12 +41,6 @@ trait EditableTable extends Table {
 
   trait ViewModel {
 
-//    var itemId :  AnyRef = _;
-//    var propertyId : AnyRef = _;
-
-//    def nextField
-
-
     def onEditedPropertyChange(itemId : AnyRef, propertyId : AnyRef)
 
     def openPropertyForEditing(itemId : AnyRef, propertyId : AnyRef);
@@ -58,22 +52,6 @@ trait EditableTable extends Table {
     def closePropertyForEditing(itemId : AnyRef, propertyId : AnyRef);
 
     def closeLastPropertyForEditing();
-
-
-
-//    def stepRight();
-//
-//    def stepLeft();
-//
-//    def stepUp();
-//
-//    def stepDown();
-//
-//    def escape();
-
-//    def stopEditing(itemId : AnyRef, propertyId : AnyRef);
-//
-//    def undoEditing(itemId : AnyRef, propertyId : AnyRef);
 
     def wrapFieldFactory(fieldFactory : TableFieldFactory) : TableFieldFactory;
 

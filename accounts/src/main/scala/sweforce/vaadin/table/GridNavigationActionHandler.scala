@@ -1,8 +1,11 @@
 package sweforce.vaadin.table
 
-import com.vaadin.event.{ShortcutAction, Action}
 import sweforce.command.Command
-import sweforce.vaadin.keyboard.KeyGesture
+import sweforce.vaadin.keyboard.{KeyBinding, CommandActionHandler, KeyGesture}
+
+import sweforce.vaadin.keyboard.KeyGesture.DefaultImpl
+import com.vaadin.event.Action
+import com.vaadin.event.ShortcutAction.{ModifierKey, KeyCode}
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,29 +14,60 @@ import sweforce.vaadin.keyboard.KeyGesture
  * Time: 9:20 PM
  * To change this template use File | Settings | File Templates.
  */
-class GridNavigationActionHandler(val viewModel : GridNavigationGestures) extends Action.Handler{
+class GridNavigationActionHandler(val gestures : GridNavigationActionHandler#Gestures) extends Action.Handler {
 
-  val innerHandler = CommandActionHandler
+  def this() = this(
+    new Gestures {
+    def upKeyGesture = new KeyGesture.DefaultImpl("Up", KeyCode.ARROW_UP, ModifierKey.SHIFT)
 
-}
+      def prevKeyGesture = new KeyGesture.DefaultImpl("Previous", KeyCode.TAB, ModifierKey.SHIFT)
 
+      def downKeyGesture = new KeyGesture.DefaultImpl("Down", KeyCode.ARROW_DOWN, ModifierKey.SHIFT)
 
-/**
- * Created with IntelliJ IDEA.
- * User: sveffa
- * Date: 10/18/12
- * Time: 10:37 PM
- * To change this template use File | Settings | File Templates.
- */
-trait GridNavigationGestures {
+      def nextKeyGesture = new KeyGesture.DefaultImpl("Next", KeyCode.TAB)
+    }
+  )
 
-  def upKeyGesture : KeyGesture
+  var innerHandler : Action.Handler = CommandActionHandler.create();
 
-  def downKeyGesture : KeyGesture
+  def bind(commands: GridNavigationActionHandler#Commands) = {
+    innerHandler = CommandActionHandler.create(
+      new KeyBinding.DefaultImpl(gestures.upKeyGesture, commands.up()),
+      new KeyBinding.DefaultImpl(gestures.downKeyGesture, commands.down()),
+      new KeyBinding.DefaultImpl(gestures.prevKeyGesture, commands.prev()),
+      new KeyBinding.DefaultImpl(gestures.nextKeyGesture, commands.next())
+    )
+  }
 
-  def leftKeyGesture : KeyGesture
+  def getActions(target: Any, sender: Any) = {
+      innerHandler.getActions(target, sender)
+  }
 
-  def rightKeyGesture : KeyGesture
+  def handleAction(action: Action, sender: Any, target: Any) {
+    innerHandler.handleAction(action, sender, target)
+  }
+
+  trait Gestures {
+
+    def upKeyGesture: KeyGesture
+
+    def downKeyGesture: KeyGesture
+
+    def prevKeyGesture: KeyGesture
+
+    def nextKeyGesture: KeyGesture
+
+  }
+
+  trait Commands {
+    def up() : Command
+
+    def down() : Command
+
+    def next() : Command
+
+    def prev() : Command
+  }
 
 }
 

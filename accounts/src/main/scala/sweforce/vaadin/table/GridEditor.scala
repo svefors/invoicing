@@ -17,6 +17,7 @@ import com.vaadin.data.util.ObjectProperty
  */
 class GridEditor(val viewModel : GridEditorViewModel) extends Table {
 
+  //add
   addItemClickListener(new ItemClickListener {
     def itemClick(event: ItemClickEvent) {
       if (event.isDoubleClick){

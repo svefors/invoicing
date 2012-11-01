@@ -10,12 +10,12 @@ import com.vaadin.data.Container
  * Time: 10:04 PM
  * To change this template use File | Settings | File Templates.
  */
-class EditableGridFieldFactory(val viewModel : EditableGridViewModel, val inner : TableFieldFactory) extends TableFieldFactory{
+class EditableGridFieldFactory(val cellsBeingEdited : Set[EditableCellModel], val inner: TableFieldFactory) extends TableFieldFactory {
 
   def createField(container: Container, itemId: Any, propertyId: Any, uiContext: Component) = {
-    if (viewModel.isPropertyBeingEdited(itemId, propertyId)){
+    if (cellsBeingEdited.contains(EditableCellModel(itemId, propertyId))){
       inner.createField(container, itemId, propertyId, uiContext)
-    }else{
+    } else {
       null
     }
   }

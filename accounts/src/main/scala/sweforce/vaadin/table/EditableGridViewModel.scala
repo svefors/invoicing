@@ -1,5 +1,8 @@
 package sweforce.vaadin.table
 
+import collection.mutable
+import collection.script.Message
+
 /**
  * Created with IntelliJ IDEA.
  * User: sveffa
@@ -15,7 +18,7 @@ trait EditableGridViewModel {
    * @param itemId
    * @param propertyId
    */
-  def isPropertyBeingEdited(itemId : AnyRef, propertyId : AnyRef) : Boolean
+  def isPropertyBeingEdited(itemId : Any, propertyId : Any) : Boolean
 
   /**
    *
@@ -23,7 +26,9 @@ trait EditableGridViewModel {
    * @param propertyId
    * @return
    */
-  def isPropertyDirty(itemId : AnyRef, propertyId : AnyRef) : Boolean
+  def isPropertyDirty(itemId : Any, propertyId : Any) : Boolean
 
+  val cellsInEditMode  = new mutable.HashSet[EditableCellModel] with mutable.ObservableSet[EditableCellModel]
 
+  cellsInEditMode.subscribe(new mutable.Subscriber[] {})
 }
