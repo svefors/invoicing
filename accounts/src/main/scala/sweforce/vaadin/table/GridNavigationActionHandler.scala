@@ -14,11 +14,11 @@ import com.vaadin.event.ShortcutAction.{ModifierKey, KeyCode}
  * Time: 9:20 PM
  * To change this template use File | Settings | File Templates.
  */
-class GridNavigationActionHandler(val gestures : GridNavigationActionHandler#Gestures) extends Action.Handler {
+class GridNavigationActionHandler(val gestures: GridNavigationActionHandler#Gestures) extends Action.Handler {
 
   def this() = this(
     new Gestures {
-    def upKeyGesture = new KeyGesture.DefaultImpl("Up", KeyCode.ARROW_UP, ModifierKey.SHIFT)
+      def upKeyGesture = new KeyGesture.DefaultImpl("Up", KeyCode.ARROW_UP, ModifierKey.SHIFT)
 
       def prevKeyGesture = new KeyGesture.DefaultImpl("Previous", KeyCode.TAB, ModifierKey.SHIFT)
 
@@ -28,7 +28,7 @@ class GridNavigationActionHandler(val gestures : GridNavigationActionHandler#Ges
     }
   )
 
-  var innerHandler : Action.Handler = CommandActionHandler.create();
+  var innerHandler: Action.Handler = CommandActionHandler.create();
 
   def bind(commands: GridNavigationActionHandler#Commands) = {
     innerHandler = CommandActionHandler.create(
@@ -40,7 +40,7 @@ class GridNavigationActionHandler(val gestures : GridNavigationActionHandler#Ges
   }
 
   def getActions(target: Any, sender: Any) = {
-      innerHandler.getActions(target, sender)
+    innerHandler.getActions(target, sender)
   }
 
   def handleAction(action: Action, sender: Any, target: Any) {
@@ -60,13 +60,13 @@ class GridNavigationActionHandler(val gestures : GridNavigationActionHandler#Ges
   }
 
   trait Commands {
-    def up() : Command
+    def up(): Command
 
-    def down() : Command
+    def down(): Command
 
-    def next() : Command
+    def next(): Command
 
-    def prev() : Command
+    def prev(): Command
   }
 
 }
