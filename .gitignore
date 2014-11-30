@@ -19,3 +19,7 @@
 *.war
 *.ear
 /Prevalence/*.journal
+accounts/target
+application/target
+project/project/target
+project/target
