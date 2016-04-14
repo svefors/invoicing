@@ -9,6 +9,25 @@ lazy val helloworldApi = project("helloworld-api")
     libraryDependencies += lagomJavadslApi
   )
 
+lazy val transactionApi= project("transaction-api")
+  .settings(
+    version := "1.0-SNAPSHOT",
+    libraryDependencies += lagomJavadslApi
+  )
+
+lazy val transactionImpl = project("transaction-impl")
+  .enablePlugins(LagomJava)
+  .settings(
+    version := "1.0-SNAPSHOT",
+    libraryDependencies ++= Seq(
+      lagomJavadslPersistence,
+      lagomJavadslTestKit
+    )
+  )
+  .settings(lagomForkedTestSettings: _*)
+  .dependsOn(transactionApi)
+
+
 lazy val helloworldImpl = project("helloworld-impl")
   .enablePlugins(LagomJava)
   .settings(
