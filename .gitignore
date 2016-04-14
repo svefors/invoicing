@@ -11,8 +11,9 @@
 *.iws
 *.iml
 /*/build
-/target/**/*
-/target/*
+*/target/**/*
+*/target/*
+target/**/*
 /out
 # Package Files #
 *.jar
