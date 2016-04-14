@@ -38,7 +38,7 @@ object ReleaseNotes {
       settingKey[ReleaseNotes => String]("Function that returns the markdown release notes as a string")
   }
 
-  import ReleaseNotesKeys._
+  import releasenotes.ReleaseNotes.ReleaseNotesKeys._
 
   lazy val releaseNotesSettings: Seq[Setting[_]] = Seq(
     Defaults.releasesTask,
