@@ -12,7 +12,10 @@ lazy val helloworldApi = project("helloworld-api")
 lazy val transactionApi= project("transaction-api")
   .settings(
     version := "1.0-SNAPSHOT",
-    libraryDependencies += lagomJavadslApi
+    libraryDependencies ++= Seq(
+      lagomJavadslApi,
+      lagomJavadslImmutables
+    )
   )
 
 lazy val transactionImpl = project("transaction-impl")
@@ -21,7 +24,8 @@ lazy val transactionImpl = project("transaction-impl")
     version := "1.0-SNAPSHOT",
     libraryDependencies ++= Seq(
       lagomJavadslPersistence,
-      lagomJavadslTestKit
+      lagomJavadslTestKit,
+      lagomJavadslImmutables
     )
   )
   .settings(lagomForkedTestSettings: _*)
@@ -78,3 +82,6 @@ lazy val eclipseSettings = Seq(
   unmanagedSourceDirectories in Compile := Seq((javaSource in Compile).value),
   unmanagedSourceDirectories in Test := Seq((javaSource in Test).value)
 )
+
+lagomCassandraEnabled in ThisBuild := false
+lagomCassandraPort in ThisBuild := 9042

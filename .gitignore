@@ -19,3 +19,5 @@ target/**/*
 *.jar
 *.war
 *.ear
+/logs
+/*/logs
