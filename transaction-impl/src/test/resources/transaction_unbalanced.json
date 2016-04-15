@@ -1,0 +1,13 @@
+{
+  "transactionId": "2",
+  "entries": [
+    {
+      "accountId": "1001",
+      "amount": 10.10
+    },
+    {
+      "accountId": "2002",
+      "amount": -20.10
+    }
+  ]
+}
